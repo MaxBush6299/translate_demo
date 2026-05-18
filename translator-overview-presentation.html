@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Azure AI Translator Overview for ABS</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("clawpilotTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f7f4ef;
+      --cp-bg-elevated: #fcfbf8;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f5f5f5;
+      --cp-border: #dedede;
+      --cp-border-strong: #919191;
+      --cp-text: #242424;
+      --cp-text-muted: #5c5c5c;
+      --cp-text-soft: #6f6f6f;
+      --cp-accent: #b11f4b;
+      --cp-accent-hover: #9a1a41;
+      --cp-accent-soft: rgba(177, 31, 75, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0078d4;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(177, 31, 75, 0.12);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #3d3b3a;
+      --cp-bg-elevated: #343231;
+      --cp-surface: #292929;
+      --cp-surface-soft: #2e2e2e;
+      --cp-border: #474747;
+      --cp-border-strong: #5f5f5f;
+      --cp-text: #dedede;
+      --cp-text-muted: #919191;
+      --cp-text-soft: #b0b0b0;
+      --cp-accent: #fd8ea1;
+      --cp-accent-hover: #fb7b91;
+      --cp-accent-soft: rgba(253, 142, 161, 0.14);
+      --cp-accent-fg: #1a1a1a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #4da6ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(41, 41, 41, 0.72);
+      --cp-panel-strong: rgba(41, 41, 41, 0.96);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(253, 142, 161, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--cp-bg);
+      color: var(--cp-text);
+      font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.5;
+    }
+
+    a {
+      color: var(--cp-link);
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      box-shadow: var(--cp-shadow);
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--cp-accent-soft);
+      color: var(--cp-accent);
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: 2.4rem;
+      line-height: 1.1;
+    }
+
+    .hero p {
+      margin: 0 0 16px;
+      color: var(--cp-text-muted);
+      font-size: 1.02rem;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .metric {
+      background: var(--cp-surface-soft);
+      border: 1px solid var(--cp-border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .metric-label {
+      color: var(--cp-text-soft);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+
+    .metric-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .hero-side {
+      background: var(--cp-surface-soft);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .hero-side h2 {
+      margin: 0 0 12px;
+      font-size: 1.05rem;
+    }
+
+    .hero-side ul,
+    .content-card ul,
+    .callout ul,
+    .notes ul,
+    .screenshot-card ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 24px;
+    }
+
+    .toc {
+      position: sticky;
+      top: 24px;
+      align-self: start;
+      background: var(--cp-panel-strong);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--cp-shadow);
+    }
+
+    .toc h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+    }
+
+    .toc a {
+      display: block;
+      color: var(--cp-text);
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 10px;
+      margin-bottom: 4px;
+      border: 1px solid transparent;
+    }
+
+    .toc a:hover {
+      background: var(--cp-accent-soft);
+      border-color: var(--cp-border);
+    }
+
+    .content {
+      min-width: 0;
+    }
+
+    section {
+      margin-bottom: 24px;
+    }
+
+    .section-card {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      padding: 28px;
+    }
+
+    .section-kicker {
+      color: var(--cp-accent);
+      font-size: 0.84rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-card h2 {
+      margin: 0 0 12px;
+      font-size: 1.8rem;
+      line-height: 1.15;
+    }
+
+    .section-card > p {
+      margin: 0 0 16px;
+      color: var(--cp-text-muted);
+      font-size: 1rem;
+    }
+
+    .grid-2,
+    .grid-3,
+    .capability-grid,
+    .screenshot-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .capability-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .content-card,
+    .callout,
+    .notes,
+    .screenshot-card,
+    .step,
+    .phase-card {
+      background: var(--cp-surface-soft);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .content-card h3,
+    .callout h3,
+    .notes h3,
+    .screenshot-card h3,
+    .phase-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+    }
+
+    .content-card p,
+    .callout p,
+    .notes p,
+    .screenshot-card p,
+    .phase-card p {
+      margin: 0 0 12px;
+      color: var(--cp-text-muted);
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .step {
+      position: relative;
+      padding-top: 44px;
+    }
+
+    .step-number {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: var(--cp-accent);
+      color: var(--cp-accent-fg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .step h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--cp-text-muted);
+      font-size: 0.96rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--cp-border);
+      background: var(--cp-surface);
+      color: var(--cp-text);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .callout {
+      background: var(--cp-accent-soft);
+    }
+
+    .callout p:last-child,
+    .content-card p:last-child,
+    .notes p:last-child,
+    .step p:last-child,
+    .phase-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      background: var(--cp-surface);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--cp-border);
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--cp-surface-soft);
+      color: var(--cp-text);
+      font-size: 0.92rem;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .mono {
+      font-family: Consolas, "Courier New", Courier, monospace;
+      font-size: 0.92rem;
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: block;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    .phase-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .phase-card strong {
+      color: var(--cp-text);
+    }
+
+    .screenshot-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 16px;
+    }
+
+    .placeholder {
+      border: 2px dashed var(--cp-border-strong);
+      border-radius: 12px;
+      background: var(--cp-bg-elevated);
+      color: var(--cp-text-soft);
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 16px;
+      font-weight: 600;
+    }
+
+    .footer {
+      margin-top: 16px;
+      padding: 18px 20px;
+      color: var(--cp-text-soft);
+      font-size: 0.92rem;
+      background: var(--cp-surface-soft);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+    }
+
+    .quote {
+      border-left: 4px solid var(--cp-accent);
+      padding: 14px 16px;
+      background: var(--cp-accent-soft);
+      border-radius: 0 12px 12px 0;
+      margin-top: 12px;
+      color: var(--cp-text);
+      font-weight: 600;
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .layout,
+      .grid-2,
+      .grid-3,
+      .capability-grid,
+      .phase-grid,
+      .screenshot-grid,
+      .flow {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="eyebrow">Customer Presentation</div>
+      <div class="hero-grid">
+        <div>
+          <h1>Azure AI Translator overview for ABS</h1>
+          <p>
+            This presentation covers how Azure AI Translator works, what the core capabilities are,
+            where glossary and customization fit, and how to tee up the ABS demo so the conversation
+            stays focused on terminology control, scale, and practical fit.
+          </p>
+          <div class="quote">
+            Recommended message: same service, same source content, same target language. The changed input is the terminology control layer.
+          </div>
+          <div class="hero-metrics">
+            <div class="metric">
+              <div class="metric-label">Primary customer takeaway</div>
+              <div class="metric-value">Translator can support both immediate and scaled localization workflows</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Best ABS angle</div>
+              <div class="metric-value">Glossary first, then broader workflow integration</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Demo posture</div>
+              <div class="metric-value">Show terminology control, not perfection in every sentence</div>
+            </div>
+          </div>
+        </div>
+        <aside class="hero-side">
+          <h2>What you are covering in this segment</h2>
+          <ul>
+            <li>How Azure AI Translator works</li>
+            <li>Text translation versus document translation</li>
+            <li>Real time, batch, glossary, and custom model options</li>
+            <li>Accuracy, scale, security, and enterprise fit</li>
+            <li>Why your ABS demo is structured the way it is</li>
+          </ul>
+        </aside>
+      </div>
+    </header>
+
+    <div class="layout">
+      <nav class="toc">
+        <h2>Contents</h2>
+        <a href="#section-1">1. Executive framing</a>
+        <a href="#section-2">2. How Translator works</a>
+        <a href="#section-3">3. Capability map</a>
+        <a href="#section-4">4. Accuracy and customization</a>
+        <a href="#section-5">5. Scale and enterprise considerations</a>
+        <a href="#section-6">6. ABS fit and recommendation</a>
+        <a href="#section-7">7. Demo talk track</a>
+        <a href="#section-8">8. Screenshot placeholders</a>
+        <a href="#section-9">9. Reference notes</a>
+      </nav>
+
+      <main class="content">
+        <section id="section-1">
+          <div class="section-card">
+            <div class="section-kicker">1. Executive framing</div>
+            <h2>Position Translator as a workflow service, not just a language widget</h2>
+            <p>
+              Azure AI Translator is a cloud based neural machine translation service that supports real time text translation,
+              single file document translation, batch document translation, and deeper customization through custom models.
+              For ABS, the most important question is not whether Translator can translate, but how it can fit into content operations
+              while keeping maritime terminology consistent.
+            </p>
+            <div class="grid-2">
+              <div class="content-card">
+                <h3>Customer friendly framing</h3>
+                <ul>
+                  <li>Translator helps ABS move faster across languages without rebuilding the content pipeline.</li>
+                  <li>It can serve lightweight use cases and enterprise workflows with the same underlying service family.</li>
+                  <li>Glossaries give ABS a practical way to enforce preferred terminology before considering custom models.</li>
+                </ul>
+              </div>
+              <div class="notes">
+                <h3>Presenter note</h3>
+                <p>
+                  A strong opening line is: “Translator gives you a spectrum of options, from quick single document translation
+                  to governed, batch document workflows with terminology control and enterprise security.”
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="section-2">
+          <div class="section-card">
+            <div class="section-kicker">2. How Azure AI Translator works</div>
+            <h2>One service family, multiple paths depending on the content and workflow</h2>
+            <p>
+              The official Microsoft guidance separates Translator into text translation, document translation, and Custom Translator.
+              Document translation itself supports both synchronous single file translation and asynchronous batch translation.
+            </p>
+
+            <div class="flow">
+              <div class="step">
+                <div class="step-number">1</div>
+                <h3>Choose the workflow</h3>
+                <p>Real time text, single file document translation, or batch translation across many files.</p>
+              </div>
+              <div class="step">
+                <div class="step-number">2</div>
+                <h3>Send content to Translator</h3>
+                <p>Use REST APIs, SDKs, or Foundry for supported scenarios. Batch workflows use Blob Storage.</p>
+              </div>
+              <div class="step">
+                <div class="step-number">3</div>
+                <h3>Apply control layers</h3>
+                <p>Use glossary for term control. Use custom models when baseline plus glossary is still not enough.</p>
+              </div>
+              <div class="step">
+                <div class="step-number">4</div>
+                <h3>Return translated output</h3>
+                <p>Preserve document layout where supported, then pass translated output into review and publishing.</p>
+              </div>
+            </div>
+
+            <div class="grid-2" style="margin-top:16px;">
+              <div class="content-card">
+                <h3>Synchronous document translation</h3>
+                <p>
+                  Best for a single document and ideal for your demo. The request includes one file and can include an optional glossary.
+                  No Blob Storage account is required, and the translated file returns directly in the response.
+                </p>
+                <div class="pill-row">
+                  <span class="pill">Single file</span>
+                  <span class="pill">Optional glossary</span>
+                  <span class="pill">Fast demo path</span>
+                </div>
+              </div>
+              <div class="content-card">
+                <h3>Asynchronous batch document translation</h3>
+                <p>
+                  Best for production scale. Source files live in Blob Storage, translation runs as a job, and outputs land in target containers.
+                  This is the better fit for large document sets or CMS export based workflows.
+                </p>
+                <div class="pill-row">
+                  <span class="pill">Many files</span>
+                  <span class="pill">Blob Storage based</span>
+                  <span class="pill">Operational scale</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="callout" style="margin-top:16px;">
+              <h3>How to say it in the room</h3>
+              <p>
+                “For today’s demo I am using the synchronous single file flow because it is the cleanest way to show the effect of glossary control.
+                For an ABS production workflow, the same service family also supports batch document translation at storage based scale.”
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="section-3">
+          <div class="section-card">
+            <div class="section-kicker">3. Key capabilities</div>
+            <h2>Map the capability to the scenario</h2>
+            <p>
+              Not every translation need should be solved the same way. The value comes from choosing the simplest option that meets the accuracy and workflow need.
+            </p>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Capability</th>
+                    <th>What it does</th>
+                    <th>Best fit</th>
+                    <th>ABS message</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Text translation</strong></td>
+                    <td>Real time translation of text via API. Supports detect, transliterate, and dictionary operations.</td>
+                    <td>Apps, workflow automation, short text, live experiences</td>
+                    <td>Good for app experiences or content fragments, not the main PDF demo</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Document translation, single file</strong></td>
+                    <td>Translate one file and return the translated document directly. Can include a glossary.</td>
+                    <td>Demo, ad hoc file translation, simple user workflows</td>
+                    <td>This is the demo path you are using today</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Document translation, batch</strong></td>
+                    <td>Translate many files asynchronously while preserving structure and format.</td>
+                    <td>Large document sets, export based localization, repository scale jobs</td>
+                    <td>Best longer term option for governed ABS translation operations</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Glossary</strong></td>
+                    <td>Apply source to target terminology control during document translation.</td>
+                    <td>Known terminology, branded language, domain specific vocabulary</td>
+                    <td>Fastest way to improve ABS maritime terms without model training</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Custom Translator</strong></td>
+                    <td>Build custom neural translation systems for domain specific language, terminology, and style.</td>
+                    <td>When baseline plus glossary still falls short and enough data exists</td>
+                    <td>Potential future phase, not the first answer for this discussion</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="section-4">
+          <div class="section-card">
+            <div class="section-kicker">4. Accuracy and customization</div>
+            <h2>Use the right control layer for the right accuracy problem</h2>
+            <p>
+              The customer should leave understanding that Azure AI Translator already delivers strong baseline translation,
+              and that there are different levers for improving output depending on the nature of the issue.
+            </p>
+
+            <div class="capability-grid">
+              <div class="content-card">
+                <h3>Baseline neural translation</h3>
+                <p>
+                  Best starting point for general language quality. This is the default system you compare against in the demo.
+                </p>
+                <ul>
+                  <li>Useful for general meaning and speed to value</li>
+                  <li>Good enough for many broad content scenarios</li>
+                  <li>May not pick the preferred industry term every time</li>
+                </ul>
+              </div>
+              <div class="content-card">
+                <h3>Glossary driven term control</h3>
+                <p>
+                  Best when the challenge is preferred terminology. Microsoft guidance for document translation supports glossary files such as TSV, CSV, and XLIFF.
+                </p>
+                <ul>
+                  <li>One to one source to target language translation</li>
+                  <li>Useful for technical vocabulary, product names, and ambiguous words</li>
+                  <li>Case sensitive by default, so source matching matters</li>
+                </ul>
+              </div>
+              <div class="content-card">
+                <h3>Custom Translator</h3>
+                <p>
+                  Best when the issue is larger than a term list, such as domain style, sentence patterns, or recurring phraseology.
+                </p>
+                <ul>
+                  <li>Requires curated training data and governance</li>
+                  <li>More effort than a glossary</li>
+                  <li>Good follow on phase if glossary alone is not enough</li>
+                </ul>
+              </div>
+              <div class="callout">
+                <h3>Important demo framing</h3>
+                <p>
+                  Glossary improves terminology control. It does not guarantee that every other phrase in the document becomes perfect.
+                  That framing keeps the audience focused on the right success criterion.
+                </p>
+              </div>
+            </div>
+
+            <div class="grid-2" style="margin-top:16px;">
+              <div class="notes">
+                <h3>Use your current ABS proof points</h3>
+                <ul>
+                  <li><span class="mono">loose gear → accesorios de izado</span></li>
+                  <li><span class="mono">sheaves → roldanas</span></li>
+                  <li>Repeated technical terms are where the glossary story lands best</li>
+                </ul>
+              </div>
+              <div class="notes">
+                <h3>What not to overclaim</h3>
+                <ul>
+                  <li>Do not say the glossary solves every translation issue</li>
+                  <li>Do say it makes the important domain terms more consistent</li>
+                  <li>Do say it is the fastest practical tuning lever for this use case</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="section-5">
+          <div class="section-card">
+            <div class="section-kicker">5. Scalability and enterprise considerations</div>
+            <h2>Show that this can start small and still fit enterprise expectations</h2>
+            <p>
+              The service is not just for experiments. Microsoft documents supported enterprise patterns for authentication,
+              storage authorization, network isolation, data residency, logging, and secure deployment.
+            </p>
+
+            <div class="grid-3">
+              <div class="content-card">
+                <h3>Scalability</h3>
+                <ul>
+                  <li>Batch document translation supports numerous files and larger workflows.</li>
+                  <li>Batch jobs use source and target Blob Storage containers.</li>
+                  <li>Layout and document structure are preserved for supported formats.</li>
+                </ul>
+              </div>
+              <div class="content-card">
+                <h3>Security and access</h3>
+                <ul>
+                  <li>Text translation supports resource key, bearer token, and Microsoft Entra ID authentication.</li>
+                  <li>Batch document translation can use SAS tokens or managed identities to reach storage.</li>
+                  <li>Azure Key Vault is the right place for secret handling and key rotation.</li>
+                </ul>
+              </div>
+              <div class="content-card">
+                <h3>Network and compliance</h3>
+                <ul>
+                  <li>Private endpoints, firewalls, and region specific endpoints are available patterns.</li>
+                  <li>Data residency depends on the Azure region used for the resource.</li>
+                  <li>Containers are an option for more isolated or offline scenarios.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="grid-2" style="margin-top:16px;">
+              <div class="callout">
+                <h3>Enterprise line to use</h3>
+                <p>
+                  “This can begin as a targeted language service for a single workflow and still be deployed with the security,
+                  identity, storage, and network controls you would expect in an enterprise Azure environment.”
+                </p>
+              </div>
+              <div class="notes">
+                <h3>Human oversight</h3>
+                <p>
+                  Microsoft guidance also supports the practical reality that sensitive translations should include human review.
+                  That is especially useful for customer facing, regulated, or safety relevant content.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="section-6">
+          <div class="section-card">
+            <div class="section-kicker">6. ABS fit and recommendation</div>
+            <h2>Recommend the simplest useful path first</h2>
+            <p>
+              Based on the ABS scenario discussed so far, the most pragmatic path is to start with standard Translator plus glossary control,
+              prove value with real content, then expand into batch workflows and only consider custom models if the residual quality gap justifies it.
+            </p>
+
+            <div class="phase-grid">
+              <div class="phase-card">
+                <h3>Phase 1: prove immediate value</h3>
+                <p><strong>Goal:</strong> show that ABS terminology can be controlled without a long setup effort.</p>
+                <ul>
+                  <li>Use single file document translation</li>
+                  <li>Apply ABS maritime glossary</li>
+                  <li>Demonstrate before and after on selected technical pages</li>
+                </ul>
+              </div>
+              <div class="phase-card">
+                <h3>Phase 2: operationalize</h3>
+                <p><strong>Goal:</strong> move from demo to repeatable workflow.</p>
+                <ul>
+                  <li>Shift to batch document translation where appropriate</li>
+                  <li>Use Blob Storage, managed identity, and review workflow</li>
+                  <li>Connect outputs to downstream publishing or review steps</li>
+                </ul>
+              </div>
+              <div class="phase-card">
+                <h3>Phase 3: deepen accuracy</h3>
+                <p><strong>Goal:</strong> address residual domain specific issues that a glossary cannot solve alone.</p>
+                <ul>
+                  <li>Evaluate Custom Translator if enough curated data exists</li>
+                  <li>Use human review for high impact content classes</li>
+                  <li>Expand terminology governance over time</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="section-7">
+          <div class="section-card">
+            <div class="section-kicker">7. Demo talk track</div>
+            <h2>Tee up the demo so the customer watches for the right signal</h2>
+            <p>
+              Your current excerpt is stronger now because it is more glossary centric. The story should emphasize repeated technical term control,
+              not a claim that every sentence becomes perfect.
+            </p>
+
+            <div class="grid-2">
+              <div class="content-card">
+                <h3>Recommended setup narrative</h3>
+                <ol>
+                  <li>“I am using the same source excerpt, same target language, and same service in both runs.”</li>
+                  <li>“Run one is baseline Translator with no glossary.”</li>
+                  <li>“Run two adds a domain glossary for ABS terminology.”</li>
+                  <li>“The point is to show how preferred terms become more consistent.”</li>
+                </ol>
+              </div>
+              <div class="content-card">
+                <h3>Recommended control surface in code</h3>
+                <p>Use a glossary path parameter rather than a simple on off flag. It is cleaner and more reusable.</p>
+                <div class="mono">glossaryPath = null
+glossaryPath = "glossary/glossary_v1-en-es.tsv"</div>
+              </div>
+            </div>
+
+            <div class="grid-2" style="margin-top:16px;">
+              <div class="notes">
+                <h3>Current terms to point out live</h3>
+                <ul>
+                  <li><span class="mono">loose gear</span></li>
+                  <li><span class="mono">sheaves</span></li>
+                  <li><span class="mono">proof testing</span></li>
+                  <li><span class="mono">wire ropes</span></li>
+                </ul>
+              </div>
+              <div class="notes">
+                <h3>What to say after the reveal</h3>
+                <p>
+                  “This is the practical value of a glossary. We are not retraining the whole system here. We are adding a governed
+                  terminology layer so the terms that matter to ABS are translated the way ABS wants them translated.”
+                </p>
+              </div>
+            </div>
+
+            <div class="callout" style="margin-top:16px;">
+              <h3>Optional transition into next discussion</h3>
+              <p>
+                “If this approach looks promising, the next conversation is less about whether translation is possible and more about
+                where ABS wants to apply it first: ad hoc files, repeatable document sets, or a broader content workflow.”
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="section-8">
+          <div class="section-card">
+            <div class="section-kicker">8. Screenshot placeholders</div>
+            <h2>Capture list for a polished version of this presentation</h2>
+            <p>
+              Placeholders are included below. If you want, these can be replaced later with Azure, Foundry, repo, or demo screenshots.
+            </p>
+
+            <div class="screenshot-grid">
+              <div class="screenshot-card">
+                <h3>Screenshot 1: Azure Translator resource or Foundry translator entry point</h3>
+                <p>Use this to ground the audience in where the service lives in Azure.</p>
+                <div class="placeholder">Placeholder: Azure Translator resource overview or Foundry Translator playground landing view</div>
+              </div>
+              <div class="screenshot-card">
+                <h3>Screenshot 2: Architecture or request path</h3>
+                <p>Show the flow from source content to Translator to translated output.</p>
+                <div class="placeholder">Placeholder: simple architecture screenshot or diagram showing app, storage, Translator, and output</div>
+              </div>
+              <div class="screenshot-card">
+                <h3>Screenshot 3: Demo code or repo parameter</h3>
+                <p>Support the point that the glossary is a controlled input to the same workflow.</p>
+                <div class="placeholder">Placeholder: code snippet or terminal view showing glossaryPath null versus glossaryPath set</div>
+              </div>
+              <div class="screenshot-card">
+                <h3>Screenshot 4: Before and after comparison</h3>
+                <p>Use the strongest side by side proof point from your ABS excerpt.</p>
+                <div class="placeholder">Placeholder: comparison artifact with loose gear and sheaves highlighted</div>
+              </div>
+            </div>
+
+            <div class="grid-2" style="margin-top:16px;">
+              <div class="notes">
+                <h3>Recommended screenshot checklist</h3>
+                <ul>
+                  <li>Azure Translator resource or Foundry Translator playground</li>
+                  <li>Any Azure Storage or workflow diagram you want to reference for batch translation</li>
+                  <li>Repo view showing how the glossary is passed into the translation request</li>
+                  <li>Final comparison screenshot with 2 to 4 highlighted terms</li>
+                </ul>
+              </div>
+              <div class="notes">
+                <h3>What not to capture</h3>
+                <ul>
+                  <li>Raw portal screens with too much unrelated navigation chrome</li>
+                  <li>Very dense diffs where the audience has to hunt for the win</li>
+                  <li>Any output that distracts from the chosen glossary proof points</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="section-9">
+          <div class="section-card">
+            <div class="section-kicker">9. Reference notes</div>
+            <h2>Source grounding used for this presentation</h2>
+            <p>
+              The content in this presentation was grounded in current Microsoft Learn documentation for Azure AI Translator.
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Topic</th>
+                    <th>Reference</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Translator overview</td>
+                    <td><a href="https://learn.microsoft.com/azure/ai-services/translator/overview">learn.microsoft.com/azure/ai-services/translator/overview</a></td>
+                  </tr>
+                  <tr>
+                    <td>Document translation overview</td>
+                    <td><a href="https://learn.microsoft.com/azure/ai-services/translator/document-translation/overview">learn.microsoft.com/azure/ai-services/translator/document-translation/overview</a></td>
+                  </tr>
+                  <tr>
+                    <td>Text translation overview</td>
+                    <td><a href="https://learn.microsoft.com/azure/ai-services/translator/text-translation/overview">learn.microsoft.com/azure/ai-services/translator/text-translation/overview</a></td>
+                  </tr>
+                  <tr>
+                    <td>Glossary guidance</td>
+                    <td><a href="https://learn.microsoft.com/azure/ai-services/translator/document-translation/how-to-guides/create-use-glossaries">learn.microsoft.com/azure/ai-services/translator/document-translation/how-to-guides/create-use-glossaries</a></td>
+                  </tr>
+                  <tr>
+                    <td>Security guidance</td>
+                    <td><a href="https://learn.microsoft.com/azure/ai-services/translator/secure-deployment">learn.microsoft.com/azure/ai-services/translator/secure-deployment</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="footer">
+              Presentation artifact prepared for customer discussion. Placeholders are intentionally included so live screenshots can be added later without changing the narrative structure.
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
