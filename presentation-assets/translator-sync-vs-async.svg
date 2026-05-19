@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="820" viewBox="0 0 1560 820" role="img" aria-labelledby="title desc">
+  <title id="title">Choosing between synchronous and asynchronous document translation</title>
+  <desc id="desc">Diagram comparing synchronous single file translation with asynchronous batch translation and noting that PDF is why the ABS demo uses asynchronous translation.</desc>
+  <defs>
+    <style>
+      text { font-family: "Segoe UI", Aptos, Calibri, sans-serif; fill: #1b1b1b; }
+      .title { font-size: 32px; font-weight: 700; }
+      .body { font-size: 18px; font-weight: 600; }
+      .heading { font-size: 22px; font-weight: 700; }
+      .small { font-size: 16px; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <polygon points="0,0 10,4 0,8" fill="#4f4f4f" />
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1560" height="820" fill="#ffffff" />
+
+  <text x="40" y="54" class="title">Choosing between synchronous and asynchronous document translation</text>
+
+  <rect x="40" y="86" width="1480" height="88" rx="14" fill="#E8DAEF" stroke="#5C2D91" stroke-width="2" />
+  <text x="60" y="122" class="body">The decision starts with file type and workflow model.</text>
+  <text x="60" y="150" class="body">Supported single file formats can use synchronous translation. PDF and storage based jobs use asynchronous batch translation.</text>
+
+  <text x="80" y="218" class="heading">Synchronous single file</text>
+  <text x="80" y="246" class="small">Direct request and direct response</text>
+
+  <rect x="80" y="270" width="320" height="160" rx="14" fill="#F3F2F1" stroke="#1e1e1e" stroke-width="2" />
+  <text x="240" y="312" text-anchor="middle" class="body">Supported inputs</text>
+  <text x="240" y="342" text-anchor="middle" class="small">DOCX, XLSX, PPTX</text>
+  <text x="240" y="368" text-anchor="middle" class="small">HTML, TXT, CSV</text>
+  <text x="240" y="394" text-anchor="middle" class="small">TSV, MSG, XLIFF</text>
+
+  <line x1="400" y1="350" x2="500" y2="350" stroke="#4f4f4f" stroke-width="3" marker-end="url(#arrowhead)" />
+
+  <rect x="500" y="270" width="320" height="160" rx="14" fill="#CFE4FA" stroke="#0078D4" stroke-width="2" />
+  <text x="660" y="312" text-anchor="middle" class="body">Translate document request</text>
+  <text x="660" y="342" text-anchor="middle" class="small">Single file and optional glossary</text>
+  <text x="660" y="368" text-anchor="middle" class="small">No Blob Storage required</text>
+
+  <line x1="820" y1="350" x2="920" y2="350" stroke="#4f4f4f" stroke-width="3" marker-end="url(#arrowhead)" />
+
+  <rect x="920" y="270" width="320" height="160" rx="14" fill="#DFF6DD" stroke="#107C10" stroke-width="2" />
+  <text x="1080" y="312" text-anchor="middle" class="body">Direct response</text>
+  <text x="1080" y="342" text-anchor="middle" class="small">Translated file returned</text>
+  <text x="1080" y="368" text-anchor="middle" class="small">to the calling client</text>
+
+  <text x="80" y="468" class="heading">Asynchronous batch</text>
+  <text x="80" y="496" class="small">Storage based job flow</text>
+
+  <rect x="80" y="520" width="320" height="160" rx="14" fill="#F3F2F1" stroke="#1e1e1e" stroke-width="2" />
+  <text x="240" y="562" text-anchor="middle" class="body">Blob Storage inputs</text>
+  <text x="240" y="592" text-anchor="middle" class="small">PDF plus supported docs</text>
+  <text x="240" y="618" text-anchor="middle" class="small">Large sets or repeatable jobs</text>
+
+  <line x1="400" y1="600" x2="500" y2="600" stroke="#4f4f4f" stroke-width="3" marker-end="url(#arrowhead)" />
+
+  <rect x="500" y="520" width="320" height="160" rx="14" fill="#FFF4CE" stroke="#F7630C" stroke-width="2" />
+  <text x="660" y="562" text-anchor="middle" class="body">Batch translation job</text>
+  <text x="660" y="592" text-anchor="middle" class="small">Source and target containers</text>
+  <text x="660" y="618" text-anchor="middle" class="small">Optional glossary supported</text>
+
+  <line x1="820" y1="600" x2="920" y2="600" stroke="#4f4f4f" stroke-width="3" marker-end="url(#arrowhead)" />
+
+  <rect x="920" y="520" width="320" height="160" rx="14" fill="#DFF6DD" stroke="#107C10" stroke-width="2" />
+  <text x="1080" y="562" text-anchor="middle" class="body">Results in storage</text>
+  <text x="1080" y="592" text-anchor="middle" class="small">Translated files written back</text>
+  <text x="1080" y="618" text-anchor="middle" class="small">to the target container</text>
+
+  <rect x="40" y="720" width="1480" height="72" rx="14" fill="#E8DAEF" stroke="#5C2D91" stroke-width="2" />
+  <text x="60" y="750" class="body">PDF is the key reason this demo uses asynchronous translation.</text>
+  <text x="60" y="778" class="small">Both paths can use a glossary. The difference is the supported file type and the operating model.</text>
+</svg>

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="860" viewBox="0 0 1440 860" role="img" aria-labelledby="title desc">
+  <title id="title">Azure AI Translator demo request path</title>
+  <desc id="desc">Architecture diagram showing ABS source content and glossary flowing through the translate_demo GitHub repository into Azure AI Translator and out to two translated outputs and a comparison page.</desc>
+  <defs>
+    <style>
+      text { font-family: "Segoe UI", Aptos, Calibri, sans-serif; fill: #1b1b1b; }
+      .title { font-size: 30px; font-weight: 700; }
+      .body { font-size: 18px; font-weight: 600; }
+      .small { font-size: 15px; }
+      .label { font-size: 14px; font-weight: 700; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+      <polygon points="0,0 10,4 0,8" fill="#4f4f4f" />
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1440" height="860" fill="#ffffff" />
+
+  <text x="40" y="50" class="title">Azure AI Translator demo request path</text>
+
+  <rect x="40" y="86" width="1360" height="88" rx="14" fill="#E8DAEF" stroke="#5C2D91" stroke-width="2" />
+  <text x="64" y="122" class="body">Same source file, same target language, same translation service.</text>
+  <text x="64" y="150" class="body">The changed input between runs is the glossary file.</text>
+
+  <rect x="80" y="250" width="240" height="116" rx="14" fill="#F3F2F1" stroke="#5F5F5F" stroke-width="2" />
+  <text x="200" y="288" text-anchor="middle" class="body">ABS source excerpt</text>
+  <text x="200" y="316" text-anchor="middle" class="small">PDF or DOCX</text>
+  <text x="200" y="342" text-anchor="middle" class="small">Same content in both runs</text>
+
+  <rect x="80" y="430" width="240" height="116" rx="14" fill="#FFF4CE" stroke="#F7630C" stroke-width="2" />
+  <text x="200" y="468" text-anchor="middle" class="body">ABS glossary TSV</text>
+  <text x="200" y="496" text-anchor="middle" class="small">glossary_v1-en-es.tsv</text>
+  <text x="200" y="522" text-anchor="middle" class="small">Enabled for run 2</text>
+
+  <rect x="410" y="312" width="330" height="176" rx="14" fill="#E8DAEF" stroke="#5C2D91" stroke-width="2" />
+  <text x="575" y="352" text-anchor="middle" class="body">translate_demo GitHub repo</text>
+  <text x="575" y="380" text-anchor="middle" class="small">MaxBush6299/translate_demo</text>
+  <text x="575" y="424" text-anchor="middle" class="small">Local script or app selects</text>
+  <text x="575" y="450" text-anchor="middle" class="small">source file, target language,</text>
+  <text x="575" y="476" text-anchor="middle" class="small">and glossaryPath</text>
+
+  <rect x="830" y="312" width="330" height="176" rx="14" fill="#CFE4FA" stroke="#0078D4" stroke-width="2" />
+  <text x="995" y="352" text-anchor="middle" class="body">Azure AI Translator</text>
+  <text x="995" y="380" text-anchor="middle" class="small">Synchronous document translation</text>
+  <text x="995" y="424" text-anchor="middle" class="small">Single file request</text>
+  <text x="995" y="450" text-anchor="middle" class="small">Optional glossary</text>
+  <text x="995" y="476" text-anchor="middle" class="small">Preserves document layout</text>
+
+  <rect x="1220" y="230" width="190" height="108" rx="14" fill="#DFF6DD" stroke="#107C10" stroke-width="2" />
+  <text x="1315" y="266" text-anchor="middle" class="label">Run 1 output</text>
+  <text x="1315" y="294" text-anchor="middle" class="small">Spanish document</text>
+  <text x="1315" y="320" text-anchor="middle" class="small">No glossary</text>
+
+  <rect x="1220" y="446" width="190" height="108" rx="14" fill="#DFF6DD" stroke="#107C10" stroke-width="2" />
+  <text x="1315" y="482" text-anchor="middle" class="label">Run 2 output</text>
+  <text x="1315" y="510" text-anchor="middle" class="small">Spanish document</text>
+  <text x="1315" y="536" text-anchor="middle" class="small">With glossary</text>
+
+  <rect x="1110" y="652" width="300" height="126" rx="14" fill="#D9F4F7" stroke="#0F6CBD" stroke-width="2" />
+  <text x="1260" y="692" text-anchor="middle" class="body">comparison.html</text>
+  <text x="1260" y="720" text-anchor="middle" class="small">Side by side review</text>
+  <text x="1260" y="746" text-anchor="middle" class="small">Highlight terminology changes</text>
+
+  <line x1="320" y1="308" x2="410" y2="362" stroke="#4f4f4f" stroke-width="3" marker-end="url(#arrowhead)" />
+  <line x1="320" y1="488" x2="410" y2="430" stroke="#4f4f4f" stroke-width="3" marker-end="url(#arrowhead)" />
+  <text x="334" y="396" class="label">optional</text>
+
+  <line x1="740" y1="400" x2="830" y2="400" stroke="#4f4f4f" stroke-width="3" marker-end="url(#arrowhead)" />
+  <line x1="1160" y1="372" x2="1220" y2="284" stroke="#4f4f4f" stroke-width="3" marker-end="url(#arrowhead)" />
+  <line x1="1160" y1="430" x2="1220" y2="500" stroke="#4f4f4f" stroke-width="3" marker-end="url(#arrowhead)" />
+  <line x1="1315" y1="338" x2="1315" y2="652" stroke="#4f4f4f" stroke-width="3" marker-end="url(#arrowhead)" />
+  <line x1="1315" y1="554" x2="1315" y2="652" stroke="#4f4f4f" stroke-width="3" marker-end="url(#arrowhead)" />
+</svg>
