@@ -151,7 +151,15 @@ _HTML_TEMPLATE = (
 
 def _extract_text(pdf_path: Path) -> str:
     reader = PdfReader(str(pdf_path))
-    return "\n".join(page.extract_text() or "" for page in reader.pages)
+    text = "\n".join(page.extract_text() or "" for page in reader.pages)
+    if not text.strip():
+        print(
+            f"WARNING: No text extracted from {pdf_path.name}. "
+            "The PDF may be image-only. The diff will be empty.\n"
+            "Tip: If Azure Translator OCR'd the source, the output should have a text layer — "
+            "try re-running the translation scripts if you see this message."
+        )
+    return text
 
 
 def _tokenize(text: str) -> list[str]:
