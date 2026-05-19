@@ -96,7 +96,6 @@
       background: var(--cp-surface);
       border: 1px solid var(--cp-border);
       border-radius: 16px;
-      box-shadow: var(--cp-shadow);
       padding: 32px;
       margin-bottom: 24px;
     }
@@ -105,8 +104,9 @@
       display: inline-block;
       padding: 6px 12px;
       border-radius: 999px;
-      background: var(--cp-accent-soft);
-      color: var(--cp-accent);
+      background: var(--cp-surface-soft);
+      color: var(--cp-link);
+      border: 1px solid var(--cp-border);
       font-size: 0.86rem;
       font-weight: 700;
       letter-spacing: 0.03em;
@@ -195,7 +195,6 @@
       border: 1px solid var(--cp-border);
       border-radius: 16px;
       padding: 20px;
-      box-shadow: var(--cp-shadow);
     }
 
     .toc h2 {
@@ -234,7 +233,7 @@
     }
 
     .section-kicker {
-      color: var(--cp-accent);
+      color: var(--cp-link);
       font-size: 0.84rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -363,7 +362,8 @@
     }
 
     .callout {
-      background: var(--cp-accent-soft);
+      background: var(--cp-surface-soft);
+      border-left: 4px solid var(--cp-link);
     }
 
     .callout p:last-child,
@@ -445,6 +445,15 @@
       font-weight: 600;
     }
 
+    .screenshot-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--cp-border);
+      border-radius: 12px;
+      background: var(--cp-bg-elevated);
+    }
+
     .footer {
       margin-top: 16px;
       padding: 18px 20px;
@@ -456,9 +465,9 @@
     }
 
     .quote {
-      border-left: 4px solid var(--cp-accent);
+      border-left: 4px solid var(--cp-link);
       padding: 14px 16px;
-      background: var(--cp-accent-soft);
+      background: var(--cp-surface-soft);
       border-radius: 0 12px 12px 0;
       margin-top: 12px;
       color: var(--cp-text);
@@ -490,41 +499,41 @@
 <body>
   <div class="page">
     <header class="hero">
-      <div class="eyebrow">Customer Presentation</div>
+      <div class="eyebrow">Azure AI Services</div>
       <div class="hero-grid">
         <div>
           <h1>Azure AI Translator overview for ABS</h1>
           <p>
-            This presentation covers how Azure AI Translator works, what the core capabilities are,
-            where glossary and customization fit, and how to tee up the ABS demo so the conversation
-            stays focused on terminology control, scale, and practical fit.
+            This overview explains how Azure AI Translator works, where text and document translation fit,
+            how glossary and customization options improve terminology control, and how these capabilities
+            can support ABS content workflows from targeted pilots to broader operational use.
           </p>
           <div class="quote">
-            Recommended message: same service, same source content, same target language. The changed input is the terminology control layer.
+            Glossary driven terminology control helps ABS align translated output with preferred maritime language while using the same translation workflow.
           </div>
           <div class="hero-metrics">
             <div class="metric">
-              <div class="metric-label">Primary customer takeaway</div>
-              <div class="metric-value">Translator can support both immediate and scaled localization workflows</div>
+              <div class="metric-label">Immediate value</div>
+              <div class="metric-value">Single file translation with terminology control</div>
             </div>
             <div class="metric">
-              <div class="metric-label">Best ABS angle</div>
-              <div class="metric-value">Glossary first, then broader workflow integration</div>
+              <div class="metric-label">Operational fit</div>
+              <div class="metric-value">Batch document translation for repeatable content pipelines</div>
             </div>
             <div class="metric">
-              <div class="metric-label">Demo posture</div>
-              <div class="metric-value">Show terminology control, not perfection in every sentence</div>
+              <div class="metric-label">Primary value driver</div>
+              <div class="metric-value">Consistent handling of important ABS terminology</div>
             </div>
           </div>
         </div>
         <aside class="hero-side">
-          <h2>What you are covering in this segment</h2>
+          <h2>Discussion highlights</h2>
           <ul>
             <li>How Azure AI Translator works</li>
             <li>Text translation versus document translation</li>
             <li>Real time, batch, glossary, and custom model options</li>
             <li>Accuracy, scale, security, and enterprise fit</li>
-            <li>Why your ABS demo is structured the way it is</li>
+            <li>Illustrative document translation example using glossary control</li>
           </ul>
         </aside>
       </div>
@@ -533,22 +542,20 @@
     <div class="layout">
       <nav class="toc">
         <h2>Contents</h2>
-        <a href="#section-1">1. Executive framing</a>
+        <a href="#section-1">1. Why Translator matters</a>
         <a href="#section-2">2. How Translator works</a>
         <a href="#section-3">3. Capability map</a>
-        <a href="#section-4">4. Accuracy and customization</a>
-        <a href="#section-5">5. Scale and enterprise considerations</a>
-        <a href="#section-6">6. ABS fit and recommendation</a>
-        <a href="#section-7">7. Demo talk track</a>
-        <a href="#section-8">8. Screenshot placeholders</a>
-        <a href="#section-9">9. Reference notes</a>
+        <a href="#section-4">4. Accuracy and terminology control</a>
+        <a href="#section-5">5. Scale and enterprise fit</a>
+        <a href="#section-6">6. Demo example</a>
+        <a href="#section-7">7. References</a>
       </nav>
 
       <main class="content">
         <section id="section-1">
           <div class="section-card">
-            <div class="section-kicker">1. Executive framing</div>
-            <h2>Position Translator as a workflow service, not just a language widget</h2>
+            <div class="section-kicker">1. Why Translator matters</div>
+            <h2>A practical language service for ABS content workflows</h2>
             <p>
               Azure AI Translator is a cloud based neural machine translation service that supports real time text translation,
               single file document translation, batch document translation, and deeper customization through custom models.
@@ -557,20 +564,26 @@
             </p>
             <div class="grid-2">
               <div class="content-card">
-                <h3>Customer friendly framing</h3>
+                <h3>Business value</h3>
                 <ul>
                   <li>Translator helps ABS move faster across languages without rebuilding the content pipeline.</li>
-                  <li>It can serve lightweight use cases and enterprise workflows with the same underlying service family.</li>
-                  <li>Glossaries give ABS a practical way to enforce preferred terminology before considering custom models.</li>
+                  <li>It can support lightweight use cases and governed enterprise workflows with the same service family.</li>
+                  <li>Glossaries provide a practical way to enforce preferred terminology before considering custom models.</li>
                 </ul>
               </div>
               <div class="notes">
-                <h3>Presenter note</h3>
+                <h3>Why start here</h3>
                 <p>
-                  A strong opening line is: “Translator gives you a spectrum of options, from quick single document translation
-                  to governed, batch document workflows with terminology control and enterprise security.”
+                  Translator offers a spectrum of options, from quick single document translation to batch document workflows
+                  with terminology control, security, and integration points for larger content operations.
                 </p>
               </div>
+            </div>
+
+            <div class="content-card" style="margin-top:16px;">
+              <h3>Translator as an Azure service</h3>
+              <p>This keeps the discussion concrete by showing the service where it is managed in Azure.</p>
+              <img class="screenshot-image" src="presentation-assets/translator-resource-overview.png" alt="Azure Translator resource overview in the Azure portal">
             </div>
           </div>
         </section>
@@ -607,27 +620,36 @@
               </div>
             </div>
 
+            <div class="content-card" style="margin-top:16px;">
+              <h3>Synchronous and asynchronous translation paths</h3>
+              <p>The clearest way to explain the service choice is to compare the two operating models directly. If the source is a supported single file format and you want a direct response, synchronous works well. If the source is a PDF, storage based, or part of a broader job flow, asynchronous batch is the right path.</p>
+              <img class="screenshot-image" src="presentation-assets/translator-sync-vs-async.svg" alt="Diagram comparing synchronous single file translation and asynchronous batch translation">
+            </div>
+
             <div class="grid-2" style="margin-top:16px;">
               <div class="content-card">
                 <h3>Synchronous document translation</h3>
                 <p>
-                  Best for a single document and ideal for your demo. The request includes one file and can include an optional glossary.
+                  Best for a single document and well suited to proof of value examples when the source is a supported single file format
+                  such as DOCX, XLSX, PPTX, HTML, TXT, CSV, TSV, MSG, or XLIFF. The request includes one file and can include an optional glossary.
                   No Blob Storage account is required, and the translated file returns directly in the response.
                 </p>
                 <div class="pill-row">
                   <span class="pill">Single file</span>
                   <span class="pill">Optional glossary</span>
-                  <span class="pill">Fast demo path</span>
+                  <span class="pill">Proof of value path</span>
                 </div>
               </div>
               <div class="content-card">
                 <h3>Asynchronous batch document translation</h3>
                 <p>
-                  Best for production scale. Source files live in Blob Storage, translation runs as a job, and outputs land in target containers.
-                  This is the better fit for large document sets or CMS export based workflows.
+                  Best for production scale and also the right path for file types that fall outside the synchronous list, most notably PDF.
+                  Source files live in Blob Storage, translation runs as a job, and outputs land in target containers.
+                  This is the better fit for large document sets, PDF workflows, or CMS export based workflows.
                 </p>
                 <div class="pill-row">
                   <span class="pill">Many files</span>
+                  <span class="pill">PDF capable</span>
                   <span class="pill">Blob Storage based</span>
                   <span class="pill">Operational scale</span>
                 </div>
@@ -635,10 +657,18 @@
             </div>
 
             <div class="callout" style="margin-top:16px;">
-              <h3>How to say it in the room</h3>
+              <h3>What this means for ABS</h3>
               <p>
-                “For today’s demo I am using the synchronous single file flow because it is the cleanest way to show the effect of glossary control.
-                For an ABS production workflow, the same service family also supports batch document translation at storage based scale.”
+                The file type matters. Synchronous single file translation is the cleanest path when the source is in the supported single file list,
+                while batch translation is the right choice for broader production workflows and for PDF based scenarios like this demo.
+              </p>
+            </div>
+
+            <div class="notes" style="margin-top:16px;">
+              <h3>Why the demo uses asynchronous translation</h3>
+              <p>
+                The current proof of value uses a PDF excerpt from the ABS source material. Because PDF translation sits on the batch document
+                translation path, the demo uses asynchronous translation even though the core story is still glossary driven terminology control.
               </p>
             </div>
           </div>
@@ -659,7 +689,7 @@
                     <th>Capability</th>
                     <th>What it does</th>
                     <th>Best fit</th>
-                    <th>ABS message</th>
+                    <th>Relevance for ABS</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -667,13 +697,13 @@
                     <td><strong>Text translation</strong></td>
                     <td>Real time translation of text via API. Supports detect, transliterate, and dictionary operations.</td>
                     <td>Apps, workflow automation, short text, live experiences</td>
-                    <td>Good for app experiences or content fragments, not the main PDF demo</td>
+                    <td>Good for app experiences or content fragments, rather than the primary PDF comparison scenario</td>
                   </tr>
                   <tr>
                     <td><strong>Document translation, single file</strong></td>
                     <td>Translate one file and return the translated document directly. Can include a glossary.</td>
                     <td>Demo, ad hoc file translation, simple user workflows</td>
-                    <td>This is the demo path you are using today</td>
+                    <td>Useful for proof of value, ad hoc file translation, and quick operational examples</td>
                   </tr>
                   <tr>
                     <td><strong>Document translation, batch</strong></td>
@@ -712,7 +742,7 @@
               <div class="content-card">
                 <h3>Baseline neural translation</h3>
                 <p>
-                  Best starting point for general language quality. This is the default system you compare against in the demo.
+                  Best starting point for general language quality. This is the default system used as the baseline for comparison.
                 </p>
                 <ul>
                   <li>Useful for general meaning and speed to value</li>
@@ -743,17 +773,17 @@
                 </ul>
               </div>
               <div class="callout">
-                <h3>Important demo framing</h3>
+                <h3>What glossary control addresses</h3>
                 <p>
-                  Glossary improves terminology control. It does not guarantee that every other phrase in the document becomes perfect.
-                  That framing keeps the audience focused on the right success criterion.
+                  Glossary control improves consistency for preferred terminology. It is the right lever when important domain terms
+                  need to be translated in a governed and repeatable way.
                 </p>
               </div>
             </div>
 
             <div class="grid-2" style="margin-top:16px;">
               <div class="notes">
-                <h3>Use your current ABS proof points</h3>
+                <h3>Illustrative ABS proof points</h3>
                 <ul>
                   <li><span class="mono">loose gear → accesorios de izado</span></li>
                   <li><span class="mono">sheaves → roldanas</span></li>
@@ -761,11 +791,11 @@
                 </ul>
               </div>
               <div class="notes">
-                <h3>What not to overclaim</h3>
+                <h3>What this approach provides</h3>
                 <ul>
-                  <li>Do not say the glossary solves every translation issue</li>
-                  <li>Do say it makes the important domain terms more consistent</li>
-                  <li>Do say it is the fastest practical tuning lever for this use case</li>
+                  <li>More consistent handling of important domain terms</li>
+                  <li>A fast and practical tuning lever for this use case</li>
+                  <li>A foundation that can later be extended with custom models if needed</li>
                 </ul>
               </div>
             </div>
@@ -810,10 +840,10 @@
 
             <div class="grid-2" style="margin-top:16px;">
               <div class="callout">
-                <h3>Enterprise line to use</h3>
+                <h3>Enterprise fit</h3>
                 <p>
-                  “This can begin as a targeted language service for a single workflow and still be deployed with the security,
-                  identity, storage, and network controls you would expect in an enterprise Azure environment.”
+                  This can begin as a targeted language service for a single workflow and still be deployed with the identity,
+                  storage, network, and monitoring controls expected in an enterprise Azure environment.
                 </p>
               </div>
               <div class="notes">
@@ -829,75 +859,44 @@
 
         <section id="section-6">
           <div class="section-card">
-            <div class="section-kicker">6. ABS fit and recommendation</div>
-            <h2>Recommend the simplest useful path first</h2>
+            <div class="section-kicker">6. Demo example</div>
+            <h2>An illustrative way to show terminology control in practice</h2>
             <p>
-              Based on the ABS scenario discussed so far, the most pragmatic path is to start with standard Translator plus glossary control,
-              prove value with real content, then expand into batch workflows and only consider custom models if the residual quality gap justifies it.
-            </p>
-
-            <div class="phase-grid">
-              <div class="phase-card">
-                <h3>Phase 1: prove immediate value</h3>
-                <p><strong>Goal:</strong> show that ABS terminology can be controlled without a long setup effort.</p>
-                <ul>
-                  <li>Use single file document translation</li>
-                  <li>Apply ABS maritime glossary</li>
-                  <li>Demonstrate before and after on selected technical pages</li>
-                </ul>
-              </div>
-              <div class="phase-card">
-                <h3>Phase 2: operationalize</h3>
-                <p><strong>Goal:</strong> move from demo to repeatable workflow.</p>
-                <ul>
-                  <li>Shift to batch document translation where appropriate</li>
-                  <li>Use Blob Storage, managed identity, and review workflow</li>
-                  <li>Connect outputs to downstream publishing or review steps</li>
-                </ul>
-              </div>
-              <div class="phase-card">
-                <h3>Phase 3: deepen accuracy</h3>
-                <p><strong>Goal:</strong> address residual domain specific issues that a glossary cannot solve alone.</p>
-                <ul>
-                  <li>Evaluate Custom Translator if enough curated data exists</li>
-                  <li>Use human review for high impact content classes</li>
-                  <li>Expand terminology governance over time</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="section-7">
-          <div class="section-card">
-            <div class="section-kicker">7. Demo talk track</div>
-            <h2>Tee up the demo so the customer watches for the right signal</h2>
-            <p>
-              Your current excerpt is stronger now because it is more glossary centric. The story should emphasize repeated technical term control,
-              not a claim that every sentence becomes perfect.
+              The current excerpt is stronger because it is more glossary centric. The comparison works best when it emphasizes
+              repeated technical term control across the same source content, and it also gives a clean reason to explain why this demo
+              runs as an asynchronous PDF translation workflow.
             </p>
 
             <div class="grid-2">
               <div class="content-card">
-                <h3>Recommended setup narrative</h3>
+                <h3>Example comparison flow</h3>
                 <ol>
-                  <li>“I am using the same source excerpt, same target language, and same service in both runs.”</li>
-                  <li>“Run one is baseline Translator with no glossary.”</li>
-                  <li>“Run two adds a domain glossary for ABS terminology.”</li>
-                  <li>“The point is to show how preferred terms become more consistent.”</li>
+                  <li>Use the same PDF excerpt, target language, and translation service in both runs.</li>
+                  <li>Because the source is a PDF, submit both runs through asynchronous batch document translation.</li>
+                  <li>Run one shows baseline Translator output with no glossary.</li>
+                  <li>Run two adds a domain glossary for ABS terminology.</li>
+                  <li>The comparison shows how preferred terms become more consistent.</li>
                 </ol>
               </div>
               <div class="content-card">
-                <h3>Recommended control surface in code</h3>
-                <p>Use a glossary path parameter rather than a simple on off flag. It is cleaner and more reusable.</p>
-                <div class="mono">glossaryPath = null
+                <h3>Illustrative implementation detail</h3>
+                <p>A glossary path parameter keeps the workflow reusable and makes the changed input explicit, while the document type explains why the demo uses the asynchronous path.</p>
+                <div class="mono">sourceDocument = "source_docs/test_excerpt.pdf"
+workflow = "asynchronous batch"
+glossaryPath = null
 glossaryPath = "glossary/glossary_v1-en-es.tsv"</div>
               </div>
             </div>
 
+            <div class="content-card" style="margin-top:16px;">
+              <h3>Illustrative request path</h3>
+              <p>This is the practical flow behind the demo. The repo runs the same PDF excerpt through the same target language and the same service twice, then compares the outputs after the glossary is introduced on the second run. Public repo: <a href="https://github.com/MaxBush6299/translate_demo">github.com/MaxBush6299/translate_demo</a></p>
+              <img class="screenshot-image" src="docs/Architecture.png" alt="Architecture diagram showing the Azure AI Translator demo request path">
+            </div>
+
             <div class="grid-2" style="margin-top:16px;">
               <div class="notes">
-                <h3>Current terms to point out live</h3>
+                <h3>Illustrative terms from the ABS glossary</h3>
                 <ul>
                   <li><span class="mono">loose gear</span></li>
                   <li><span class="mono">sheaves</span></li>
@@ -906,81 +905,28 @@ glossaryPath = "glossary/glossary_v1-en-es.tsv"</div>
                 </ul>
               </div>
               <div class="notes">
-                <h3>What to say after the reveal</h3>
+                <h3>What the comparison demonstrates</h3>
                 <p>
-                  “This is the practical value of a glossary. We are not retraining the whole system here. We are adding a governed
-                  terminology layer so the terms that matter to ABS are translated the way ABS wants them translated.”
+                  The practical value of a glossary is not full retraining of the system. It is the addition of a governed
+                  terminology layer so the terms that matter most are translated in a more consistent and preferred way.
                 </p>
               </div>
             </div>
 
             <div class="callout" style="margin-top:16px;">
-              <h3>Optional transition into next discussion</h3>
+              <h3>Where this can extend next</h3>
               <p>
-                “If this approach looks promising, the next conversation is less about whether translation is possible and more about
-                where ABS wants to apply it first: ad hoc files, repeatable document sets, or a broader content workflow.”
+                If this approach looks promising, the next conversation shifts from whether translation is possible to where ABS
+                wants to apply it first: ad hoc files, repeatable document sets, or a broader content workflow.
               </p>
             </div>
           </div>
         </section>
 
-        <section id="section-8">
+        <section id="section-7">
           <div class="section-card">
-            <div class="section-kicker">8. Screenshot placeholders</div>
-            <h2>Capture list for a polished version of this presentation</h2>
-            <p>
-              Placeholders are included below. If you want, these can be replaced later with Azure, Foundry, repo, or demo screenshots.
-            </p>
-
-            <div class="screenshot-grid">
-              <div class="screenshot-card">
-                <h3>Screenshot 1: Azure Translator resource or Foundry translator entry point</h3>
-                <p>Use this to ground the audience in where the service lives in Azure.</p>
-                <div class="placeholder">Placeholder: Azure Translator resource overview or Foundry Translator playground landing view</div>
-              </div>
-              <div class="screenshot-card">
-                <h3>Screenshot 2: Architecture or request path</h3>
-                <p>Show the flow from source content to Translator to translated output.</p>
-                <div class="placeholder">Placeholder: simple architecture screenshot or diagram showing app, storage, Translator, and output</div>
-              </div>
-              <div class="screenshot-card">
-                <h3>Screenshot 3: Demo code or repo parameter</h3>
-                <p>Support the point that the glossary is a controlled input to the same workflow.</p>
-                <div class="placeholder">Placeholder: code snippet or terminal view showing glossaryPath null versus glossaryPath set</div>
-              </div>
-              <div class="screenshot-card">
-                <h3>Screenshot 4: Before and after comparison</h3>
-                <p>Use the strongest side by side proof point from your ABS excerpt.</p>
-                <div class="placeholder">Placeholder: comparison artifact with loose gear and sheaves highlighted</div>
-              </div>
-            </div>
-
-            <div class="grid-2" style="margin-top:16px;">
-              <div class="notes">
-                <h3>Recommended screenshot checklist</h3>
-                <ul>
-                  <li>Azure Translator resource or Foundry Translator playground</li>
-                  <li>Any Azure Storage or workflow diagram you want to reference for batch translation</li>
-                  <li>Repo view showing how the glossary is passed into the translation request</li>
-                  <li>Final comparison screenshot with 2 to 4 highlighted terms</li>
-                </ul>
-              </div>
-              <div class="notes">
-                <h3>What not to capture</h3>
-                <ul>
-                  <li>Raw portal screens with too much unrelated navigation chrome</li>
-                  <li>Very dense diffs where the audience has to hunt for the win</li>
-                  <li>Any output that distracts from the chosen glossary proof points</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="section-9">
-          <div class="section-card">
-            <div class="section-kicker">9. Reference notes</div>
-            <h2>Source grounding used for this presentation</h2>
+            <div class="section-kicker">7. References</div>
+            <h2>Selected Microsoft Learn references</h2>
             <p>
               The content in this presentation was grounded in current Microsoft Learn documentation for Azure AI Translator.
             </p>
@@ -1017,7 +963,7 @@ glossaryPath = "glossary/glossary_v1-en-es.tsv"</div>
               </table>
             </div>
             <div class="footer">
-              Presentation artifact prepared for customer discussion. Placeholders are intentionally included so live screenshots can be added later without changing the narrative structure.
+              Prepared for customer discussion. Visual assets can be refreshed later without changing the presentation structure.
             </div>
           </div>
         </section>
