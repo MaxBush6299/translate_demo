@@ -151,8 +151,9 @@
       color: rgba(255,255,255,0.85);
       font-size: 0.95rem;
     }
-    .hero-body { padding: 32px 36px; }
-    .hero-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 28px; align-items: start; }
+    .hero-body { padding: 32px 36px; min-width: 0; }
+    .hero-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 28px; align-items: start; min-width: 0; }
+    .hero-grid > div { min-width: 0; }
     .hero h1 { margin: 0 0 14px; font-size: 2.6rem; line-height: 1.08; letter-spacing: -0.02em; }
     .hero-lead { margin: 0 0 20px; color: var(--cp-text-muted); font-size: 1.06rem; }
     .hero-quote {
@@ -254,9 +255,13 @@
       border-radius: 20px;
       padding: 32px;
       box-shadow: 0 0 2px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.05);
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .section-card.animate-ready {
       opacity: 0;
       transform: translateY(18px);
-      transition: opacity 0.45s ease, transform 0.45s ease;
     }
     .section-card.visible { opacity: 1; transform: translateY(0); }
     .section-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
@@ -1010,11 +1015,17 @@ glossaryPath = "glossary/glossary_v1-en-es.tsv"</div>
     }, { rootMargin: '-10% 0px -70% 0px' });
     sections.forEach(s => observer.observe(s));
 
-    // ── Section fade-in ──
+    // ── Section fade-in — only animate cards not already in viewport ──
     const cardObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.section-card').forEach(c => cardObserver.observe(c));
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.remove('animate-ready'); e.target.classList.add('visible'); cardObserver.unobserve(e.target); } });
+    }, { threshold: 0.06 });
+    document.querySelectorAll('.section-card').forEach(c => {
+      const rect = c.getBoundingClientRect();
+      if (rect.top > window.innerHeight) {
+        c.classList.add('animate-ready');
+        cardObserver.observe(c);
+      }
+    });
 
     // ── Dark/light toggle ──
     function toggleTheme() {
