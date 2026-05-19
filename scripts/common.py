@@ -95,7 +95,7 @@ def load_config() -> DemoConfig:
         local_source_pdf=REPO_ROOT
         / os.getenv(
             "LOCAL_SOURCE_PDF",
-            "source_docs/Attachments_LiftingAppliancesjan2026.pdf",
+            "source_docs/osha_excerpt.pdf",
         ),
         local_glossary_tsv=REPO_ROOT
         / os.getenv("LOCAL_GLOSSARY_TSV", "glossary/glossary_v1-en-es.tsv"),

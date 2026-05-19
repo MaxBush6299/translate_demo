@@ -5,7 +5,7 @@ Translate an English PDF to Spanish twice using **Azure AI Translator → Docume
 1. **Run 1 — no glossary**: baseline machine translation.
 2. **Run 2 — with glossary**: a domain TSV glossary steers specific terms.
 
-Open both translated PDFs side-by-side to show how the glossary changes specific terminology (e.g., `lifting appliance → aparato de izado`, `surveyor → inspector`, `slewing rings → coronas de giro`).
+Open both translated PDFs side-by-side to show how the glossary changes specific terminology (e.g., `rigging → aparejo`, `shackles → grilletes`, `working load limit → límite de carga de trabajo`).
 
 Authentication is **fully keyless** via Entra ID and managed identity — no API keys or SAS tokens.
 
@@ -23,7 +23,7 @@ Authentication is **fully keyless** via Entra ID and managed identity — no API
 
 ```
 translatedemo/
-  source_docs/Attachments_LiftingAppliancesjan2026.pdf
+  source_docs/osha_excerpt.pdf
   glossary/glossary_v1-en-es.tsv
   infra/
     main.bicep
@@ -122,11 +122,11 @@ Open `glossary/glossary_v1-en-es.tsv`. Call out the terms you're about to demons
 
 | English | Spanish (glossary) |
 | --- | --- |
-| `lifting appliance` | `aparato de izado` |
-| `surveyor` | `inspector` |
-| `slewing rings` | `coronas de giro` |
-| `flag Administration` | `Administración del Estado de abanderamiento` |
-| `loose gear` | `accesorios de izado` |
+| `rigging` | `aparejo` |
+| `shackles` | `grilletes` |
+| `working load limit` | `límite de carga de trabajo` |
+| `slings` | `eslingas` |
+| `qualified rigger` | `aparejador calificado` |
 
 ### Run 2 — with glossary
 
