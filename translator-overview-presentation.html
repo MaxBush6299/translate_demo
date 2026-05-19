@@ -7,8 +7,8 @@
   <script>
     (() => {
       const param = new URLSearchParams(window.location.search).get("clawpilotTheme");
-      const theme =
-        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      const stored = localStorage.getItem("cp-theme");
+      const theme = param || stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
       document.documentElement.setAttribute("data-theme", theme);
     })();
   </script>
@@ -66,504 +66,488 @@
       --cp-highlight: rgba(253, 142, 161, 0.12);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    *, *::before, *::after { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
       background: var(--cp-bg);
       color: var(--cp-text);
       font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
-    a {
-      color: var(--cp-link);
+    a { color: var(--cp-link); }
+
+    /* ── Progress bar ── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      width: 0%;
+      background: var(--cp-accent);
+      z-index: 1000;
+      transition: width 0.1s linear;
     }
 
-    .page {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 24px;
+    /* ── Theme toggle ── */
+    #theme-toggle {
+      position: fixed;
+      top: 16px; right: 16px;
+      z-index: 999;
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--cp-text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      transition: background 0.2s, border-color 0.2s;
+      font-family: inherit;
+    }
+    #theme-toggle:hover {
+      border-color: var(--cp-border-strong);
+      color: var(--cp-text);
     }
 
+    /* ── Page shell ── */
+    .page { max-width: 1320px; margin: 0 auto; padding: 24px 24px 48px; }
+
+    /* ── Hero ── */
     .hero {
       background: var(--cp-surface);
       border: 1px solid var(--cp-border);
-      border-radius: 16px;
-      padding: 32px;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      box-shadow: 0 0 2px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .hero-banner {
+      background: linear-gradient(135deg, var(--cp-accent) 0%, #7a1230 100%);
+      padding: 28px 36px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .hero-banner .badge {
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .hero-banner .tagline {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+    }
+    .hero-body { padding: 32px 36px; }
+    .hero-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 28px; align-items: start; }
+    .hero h1 { margin: 0 0 14px; font-size: 2.6rem; line-height: 1.08; letter-spacing: -0.02em; }
+    .hero-lead { margin: 0 0 20px; color: var(--cp-text-muted); font-size: 1.06rem; }
+    .hero-quote {
+      border-left: 4px solid var(--cp-accent);
+      padding: 14px 18px;
+      background: var(--cp-accent-soft);
+      border-radius: 0 12px 12px 0;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--cp-text);
       margin-bottom: 24px;
     }
-
-    .eyebrow {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: var(--cp-surface-soft);
-      color: var(--cp-link);
-      border: 1px solid var(--cp-border);
-      font-size: 0.86rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 24px;
-      align-items: start;
-    }
-
-    .hero h1 {
-      margin: 0 0 12px;
-      font-size: 2.4rem;
-      line-height: 1.1;
-    }
-
-    .hero p {
-      margin: 0 0 16px;
-      color: var(--cp-text-muted);
-      font-size: 1.02rem;
-    }
-
-    .hero-metrics {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 20px;
-    }
-
+    .hero-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .metric {
-      background: var(--cp-surface-soft);
+      background: var(--cp-bg);
       border: 1px solid var(--cp-border);
       border-radius: 12px;
-      padding: 14px;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
     }
-
-    .metric-label {
-      color: var(--cp-text-soft);
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 6px;
+    .metric::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--cp-accent);
     }
-
-    .metric-value {
-      font-size: 1.05rem;
-      font-weight: 700;
-    }
-
+    .metric-label { color: var(--cp-text-soft); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; font-weight: 600; }
+    .metric-value { font-size: 0.98rem; font-weight: 700; line-height: 1.3; }
     .hero-side {
-      background: var(--cp-surface-soft);
+      background: var(--cp-bg);
       border: 1px solid var(--cp-border);
       border-radius: 16px;
-      padding: 20px;
+      padding: 22px;
     }
-
-    .hero-side h2 {
-      margin: 0 0 12px;
-      font-size: 1.05rem;
+    .hero-side h2 { margin: 0 0 14px; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cp-text-muted); }
+    .hero-side ul { margin: 0; padding: 0; list-style: none; }
+    .hero-side li {
+      padding: 9px 0;
+      border-bottom: 1px solid var(--cp-border);
+      font-size: 0.96rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
     }
+    .hero-side li:last-child { border-bottom: none; }
+    .hero-side li::before { content: '→'; color: var(--cp-accent); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
 
-    .hero-side ul,
-    .content-card ul,
-    .callout ul,
-    .notes ul,
-    .screenshot-card ul {
-      margin: 0;
-      padding-left: 20px;
-    }
+    /* ── Layout ── */
+    .layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px; }
 
-    .layout {
-      display: grid;
-      grid-template-columns: 280px minmax(0, 1fr);
-      gap: 24px;
-    }
-
+    /* ── TOC ── */
     .toc {
       position: sticky;
-      top: 24px;
+      top: 28px;
       align-self: start;
-      background: var(--cp-panel-strong);
+      background: var(--cp-surface);
       border: 1px solid var(--cp-border);
       border-radius: 16px;
       padding: 20px;
+      box-shadow: 0 0 2px rgba(0,0,0,0.06);
     }
-
-    .toc h2 {
-      margin: 0 0 14px;
-      font-size: 1rem;
-    }
-
+    .toc-label { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--cp-text-soft); font-weight: 700; margin-bottom: 12px; }
     .toc a {
-      display: block;
-      color: var(--cp-text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--cp-text-muted);
       text-decoration: none;
       padding: 8px 10px;
       border-radius: 10px;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
+      font-size: 0.9rem;
       border: 1px solid transparent;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
     }
-
-    .toc a:hover {
-      background: var(--cp-accent-soft);
-      border-color: var(--cp-border);
+    .toc a .toc-num {
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: var(--cp-surface-soft);
+      border: 1px solid var(--cp-border);
+      border-radius: 6px;
+      padding: 1px 6px;
+      flex-shrink: 0;
+      color: var(--cp-text-soft);
+      transition: background 0.15s, color 0.15s;
     }
+    .toc a:hover { background: var(--cp-accent-soft); color: var(--cp-text); border-color: var(--cp-border); }
+    .toc a.active { background: var(--cp-accent-soft); color: var(--cp-accent); border-color: var(--cp-accent); font-weight: 600; }
+    .toc a.active .toc-num { background: var(--cp-accent); color: var(--cp-accent-fg); border-color: var(--cp-accent); }
 
-    .content {
-      min-width: 0;
-    }
-
-    section {
-      margin-bottom: 24px;
-    }
-
+    /* ── Sections ── */
+    .content { min-width: 0; }
+    section { margin-bottom: 28px; }
     .section-card {
       background: var(--cp-surface);
       border: 1px solid var(--cp-border);
-      border-radius: 16px;
-      padding: 28px;
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 0 2px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.05);
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
     }
-
-    .section-kicker {
-      color: var(--cp-link);
-      font-size: 0.84rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .section-card h2 {
-      margin: 0 0 12px;
-      font-size: 1.8rem;
-      line-height: 1.15;
-    }
-
-    .section-card > p {
-      margin: 0 0 16px;
-      color: var(--cp-text-muted);
-      font-size: 1rem;
-    }
-
-    .grid-2,
-    .grid-3,
-    .capability-grid,
-    .screenshot-grid {
-      display: grid;
-      gap: 16px;
-    }
-
-    .grid-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .grid-3 {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .capability-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .content-card,
-    .callout,
-    .notes,
-    .screenshot-card,
-    .step,
-    .phase-card {
-      background: var(--cp-surface-soft);
-      border: 1px solid var(--cp-border);
-      border-radius: 16px;
-      padding: 18px;
-    }
-
-    .content-card h3,
-    .callout h3,
-    .notes h3,
-    .screenshot-card h3,
-    .phase-card h3 {
-      margin: 0 0 10px;
-      font-size: 1.05rem;
-    }
-
-    .content-card p,
-    .callout p,
-    .notes p,
-    .screenshot-card p,
-    .phase-card p {
-      margin: 0 0 12px;
-      color: var(--cp-text-muted);
-    }
-
-    .flow {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 12px;
-    }
-
-    .step {
-      position: relative;
-      padding-top: 44px;
-    }
-
-    .step-number {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      width: 22px;
-      height: 22px;
-      border-radius: 999px;
-      background: var(--cp-accent);
-      color: var(--cp-accent-fg);
+    .section-card.visible { opacity: 1; transform: translateY(0); }
+    .section-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+    .section-num {
+      font-size: 3rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--cp-accent-soft);
+      background: var(--cp-accent-soft);
+      border: 1px solid var(--cp-accent);
+      border-radius: 12px;
+      width: 56px;
+      height: 56px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.82rem;
+      font-size: 1.4rem;
+      color: var(--cp-accent);
+      font-weight: 800;
+      flex-shrink: 0;
+      letter-spacing: -0.02em;
+    }
+    .section-header-text .kicker { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--cp-text-soft); margin-bottom: 4px; }
+    .section-card h2 { margin: 0; font-size: 1.75rem; line-height: 1.15; letter-spacing: -0.01em; }
+    .section-intro { color: var(--cp-text-muted); font-size: 1.02rem; margin: 0 0 20px; line-height: 1.6; }
+
+    /* ── Grid helpers ── */
+    .grid-2, .grid-3, .grid-4 { display: grid; gap: 16px; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--cp-surface-soft);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      padding: 20px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { border-color: var(--cp-border-strong); box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    .card h3 { margin: 0 0 10px; font-size: 1.04rem; }
+    .card p { margin: 0 0 12px; color: var(--cp-text-muted); font-size: 0.95rem; }
+    .card p:last-child { margin-bottom: 0; }
+    .card ul, .card ol { margin: 0; padding-left: 20px; color: var(--cp-text-muted); font-size: 0.95rem; }
+    .card li { margin-bottom: 6px; }
+    .card li:last-child { margin-bottom: 0; }
+
+    .card-accent {
+      border-left: 4px solid var(--cp-accent);
+    }
+    .card-link-border {
+      border-left: 4px solid var(--cp-link);
+    }
+
+    /* ── Steps flow ── */
+    .flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; position: relative; margin: 4px 0 20px; }
+    .step {
+      background: var(--cp-surface-soft);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      padding: 20px 18px 18px;
+      position: relative;
+      margin: 0 8px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .step:first-child { margin-left: 0; }
+    .step:last-child { margin-right: 0; }
+    .step:hover { border-color: var(--cp-accent); box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    .step-num {
+      width: 28px; height: 28px;
+      border-radius: 999px;
+      background: var(--cp-accent);
+      color: var(--cp-accent-fg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.82rem; font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .step h3 { margin: 0 0 8px; font-size: 0.98rem; }
+    .step p { margin: 0; color: var(--cp-text-muted); font-size: 0.9rem; line-height: 1.5; }
+    .step-connector {
+      position: absolute;
+      top: 26px;
+      right: -16px;
+      color: var(--cp-accent);
+      font-size: 1.1rem;
       font-weight: 700;
+      z-index: 1;
     }
 
-    .step h3 {
-      margin: 0 0 8px;
-      font-size: 1rem;
+    /* ── Callout ── */
+    .callout {
+      background: var(--cp-surface-soft);
+      border: 1px solid var(--cp-border);
+      border-left: 4px solid var(--cp-link);
+      border-radius: 0 16px 16px 0;
+      padding: 18px 20px;
+    }
+    .callout h3 { margin: 0 0 8px; font-size: 1.02rem; }
+    .callout p { margin: 0; color: var(--cp-text-muted); font-size: 0.95rem; }
+
+    .callout-accent {
+      border-left-color: var(--cp-accent);
     }
 
-    .step p {
-      margin: 0;
-      color: var(--cp-text-muted);
-      font-size: 0.96rem;
+    /* ── Notes ── */
+    .notes {
+      background: var(--cp-bg);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      padding: 18px 20px;
     }
+    .notes h3 { margin: 0 0 10px; font-size: 1.02rem; }
+    .notes p { margin: 0; color: var(--cp-text-muted); font-size: 0.95rem; }
+    .notes ul { margin: 0; padding-left: 20px; color: var(--cp-text-muted); font-size: 0.95rem; }
+    .notes li { margin-bottom: 6px; }
 
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
+    /* ── Pills ── */
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
     .pill {
-      display: inline-flex;
-      align-items: center;
-      padding: 7px 10px;
+      display: inline-flex; align-items: center;
+      padding: 5px 12px;
       border-radius: 999px;
       border: 1px solid var(--cp-border);
       background: var(--cp-surface);
       color: var(--cp-text);
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       font-weight: 600;
     }
 
-    .callout {
-      background: var(--cp-surface-soft);
-      border-left: 4px solid var(--cp-link);
-    }
-
-    .callout p:last-child,
-    .content-card p:last-child,
-    .notes p:last-child,
-    .step p:last-child,
-    .phase-card p:last-child {
-      margin-bottom: 0;
-    }
-
+    /* ── Table ── */
     .table-wrap {
       overflow-x: auto;
       border: 1px solid var(--cp-border);
       border-radius: 16px;
       background: var(--cp-surface);
     }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 13px 16px; text-align: left; border-bottom: 1px solid var(--cp-border); vertical-align: top; font-size: 0.94rem; }
+    th { background: var(--cp-surface-soft); color: var(--cp-text); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    tbody tr:hover td { background: var(--cp-accent-soft); }
+    tr:last-child td { border-bottom: none; }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th,
-    td {
-      padding: 14px 16px;
-      text-align: left;
-      border-bottom: 1px solid var(--cp-border);
-      vertical-align: top;
-    }
-
-    th {
-      background: var(--cp-surface-soft);
-      color: var(--cp-text);
-      font-size: 0.92rem;
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    .mono {
+    /* ── Code / mono ── */
+    .code-block {
       font-family: Consolas, "Courier New", Courier, monospace;
-      font-size: 0.92rem;
-      background: var(--cp-surface);
+      font-size: 0.88rem;
+      background: var(--cp-bg);
       border: 1px solid var(--cp-border);
-      border-radius: 10px;
-      padding: 12px 14px;
-      display: block;
+      border-radius: 12px;
+      padding: 16px 18px;
       overflow-x: auto;
       white-space: pre-wrap;
-    }
-
-    .phase-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .phase-card strong {
       color: var(--cp-text);
+      line-height: 1.7;
+    }
+    code {
+      font-family: Consolas, "Courier New", Courier, monospace;
+      font-size: 0.88em;
+      background: var(--cp-surface-soft);
+      border: 1px solid var(--cp-border);
+      border-radius: 5px;
+      padding: 1px 6px;
     }
 
-    .screenshot-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      margin-top: 16px;
-    }
-
-    .placeholder {
-      border: 2px dashed var(--cp-border-strong);
-      border-radius: 12px;
-      background: var(--cp-bg-elevated);
-      color: var(--cp-text-soft);
-      min-height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 16px;
-      font-weight: 600;
-    }
-
+    /* ── Screenshot images ── */
     .screenshot-image {
       display: block;
       width: 100%;
       height: auto;
       border: 1px solid var(--cp-border);
-      border-radius: 12px;
+      border-radius: 14px;
       background: var(--cp-bg-elevated);
+      margin-top: 12px;
     }
 
+    /* ── Footer ── */
     .footer {
-      margin-top: 16px;
-      padding: 18px 20px;
+      margin-top: 28px;
+      padding: 16px 20px;
       color: var(--cp-text-soft);
-      font-size: 0.92rem;
-      background: var(--cp-surface-soft);
+      font-size: 0.88rem;
+      background: var(--cp-surface);
       border: 1px solid var(--cp-border);
       border-radius: 16px;
+      text-align: center;
     }
 
-    .quote {
-      border-left: 4px solid var(--cp-link);
-      padding: 14px 16px;
-      background: var(--cp-surface-soft);
-      border-radius: 0 12px 12px 0;
-      margin-top: 12px;
-      color: var(--cp-text);
-      font-weight: 600;
-    }
+    /* ── Spacer ── */
+    .mt { margin-top: 16px; }
+    .mt-sm { margin-top: 12px; }
 
-    @media (max-width: 1080px) {
-      .hero-grid,
-      .layout,
-      .grid-2,
-      .grid-3,
-      .capability-grid,
-      .phase-grid,
-      .screenshot-grid,
-      .flow {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-metrics {
-        grid-template-columns: 1fr;
-      }
-
-      .toc {
-        position: static;
-      }
+    /* ── Responsive ── */
+    @media (max-width: 1100px) {
+      .hero-grid, .layout, .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .hero-metrics { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr; }
+      .step { margin: 0 0 12px; }
+      .step-connector { display: none; }
+      .toc { position: static; }
     }
   </style>
 </head>
 <body>
+  <div id="progress-bar"></div>
+  <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+    <span id="theme-icon">☀️</span> <span id="theme-label">Light</span>
+  </button>
+
   <div class="page">
+
+    <!-- ── HERO ── -->
     <header class="hero">
-      <div class="eyebrow">Azure AI Services</div>
-      <div class="hero-grid">
-        <div>
-          <h1>Azure AI Translator overview</h1>
-          <p>
-            This overview explains how Azure AI Translator works, where text and document translation fit,
-            how glossary and customization options improve terminology control, and how these capabilities
-            can support content workflows from targeted pilots to broader operational use.
-          </p>
-          <div class="quote">
-            Glossary driven terminology control aligns translated output with preferred domain language while using the same translation workflow.
+      <div class="hero-banner">
+        <span class="badge">Azure AI Services</span>
+        <span class="tagline">A technical overview for translation in content workflows</span>
+      </div>
+      <div class="hero-body">
+        <div class="hero-grid">
+          <div>
+            <h1>Azure AI Translator overview</h1>
+            <p class="hero-lead">
+              This overview explains how Azure AI Translator works, where text and document translation fit,
+              how glossary and customization options improve terminology control, and how these capabilities
+              can support content workflows from targeted pilots to broader operational use.
+            </p>
+            <div class="hero-quote">
+              Glossary driven terminology control aligns translated output with preferred domain language while using the same translation workflow.
+            </div>
+            <div class="hero-metrics">
+              <div class="metric">
+                <div class="metric-label">Immediate value</div>
+                <div class="metric-value">Single file translation with terminology control</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Operational fit</div>
+                <div class="metric-value">Batch document translation for repeatable content pipelines</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Primary value driver</div>
+                <div class="metric-value">Consistent handling of important domain terminology</div>
+              </div>
+            </div>
           </div>
-          <div class="hero-metrics">
-            <div class="metric">
-              <div class="metric-label">Immediate value</div>
-              <div class="metric-value">Single file translation with terminology control</div>
-            </div>
-            <div class="metric">
-              <div class="metric-label">Operational fit</div>
-              <div class="metric-value">Batch document translation for repeatable content pipelines</div>
-            </div>
-            <div class="metric">
-              <div class="metric-label">Primary value driver</div>
-              <div class="metric-value">Consistent handling of important domain terminology</div>
-            </div>
-          </div>
+          <aside class="hero-side">
+            <h2>Discussion highlights</h2>
+            <ul>
+              <li>How Azure AI Translator works</li>
+              <li>Text translation versus document translation</li>
+              <li>Real time, batch, glossary, and custom model options</li>
+              <li>Accuracy, scale, security, and enterprise fit</li>
+              <li>Illustrative document translation example using glossary control</li>
+            </ul>
+          </aside>
         </div>
-        <aside class="hero-side">
-          <h2>Discussion highlights</h2>
-          <ul>
-            <li>How Azure AI Translator works</li>
-            <li>Text translation versus document translation</li>
-            <li>Real time, batch, glossary, and custom model options</li>
-            <li>Accuracy, scale, security, and enterprise fit</li>
-            <li>Illustrative document translation example using glossary control</li>
-          </ul>
-        </aside>
       </div>
     </header>
 
+    <!-- ── BODY LAYOUT ── -->
     <div class="layout">
-      <nav class="toc">
-        <h2>Contents</h2>
-        <a href="#section-1">1. Why Translator matters</a>
-        <a href="#section-2">2. How Translator works</a>
-        <a href="#section-3">3. Capability map</a>
-        <a href="#section-4">4. Accuracy and terminology control</a>
-        <a href="#section-5">5. Scale and enterprise fit</a>
-        <a href="#section-6">6. Demo example</a>
-        <a href="#section-7">7. References</a>
+      <nav class="toc" aria-label="Page contents">
+        <div class="toc-label">Contents</div>
+        <a href="#section-1"><span class="toc-num">1</span> Why Translator matters</a>
+        <a href="#section-2"><span class="toc-num">2</span> How Translator works</a>
+        <a href="#section-3"><span class="toc-num">3</span> Capability map</a>
+        <a href="#section-4"><span class="toc-num">4</span> Accuracy &amp; terminology</a>
+        <a href="#section-5"><span class="toc-num">5</span> Scale &amp; enterprise fit</a>
+        <a href="#section-6"><span class="toc-num">6</span> Demo example</a>
+        <a href="#section-7"><span class="toc-num">7</span> References</a>
       </nav>
 
       <main class="content">
+
+        <!-- 1 -->
         <section id="section-1">
           <div class="section-card">
-            <div class="section-kicker">1. Why Translator matters</div>
-            <h2>A practical language service for your content workflows</h2>
-            <p>
+            <div class="section-header">
+              <div class="section-num">1</div>
+              <div class="section-header-text">
+                <div class="kicker">Why Translator matters</div>
+                <h2>A practical language service for your content workflows</h2>
+              </div>
+            </div>
+            <p class="section-intro">
               Azure AI Translator is a cloud based neural machine translation service that supports real time text translation,
               single file document translation, batch document translation, and deeper customization through custom models.
               The most important question is not whether Translator can translate, but how it can fit into content operations
               while keeping domain terminology consistent.
             </p>
             <div class="grid-2">
-              <div class="content-card">
+              <div class="card card-accent">
                 <h3>Business value</h3>
                 <ul>
                   <li>Translator helps organizations move faster across languages without rebuilding the content pipeline.</li>
@@ -579,8 +563,7 @@
                 </p>
               </div>
             </div>
-
-            <div class="content-card" style="margin-top:16px;">
+            <div class="card mt">
               <h3>Translator as an Azure service</h3>
               <p>This keeps the discussion concrete by showing the service where it is managed in Azure.</p>
               <img class="screenshot-image" src="presentation-assets/translator-resource-overview.png" alt="Azure Translator resource overview in the Azure portal">
@@ -588,46 +571,55 @@
           </div>
         </section>
 
+        <!-- 2 -->
         <section id="section-2">
           <div class="section-card">
-            <div class="section-kicker">2. How Azure AI Translator works</div>
-            <h2>One service family, multiple paths depending on the content and workflow</h2>
-            <p>
+            <div class="section-header">
+              <div class="section-num">2</div>
+              <div class="section-header-text">
+                <div class="kicker">How Azure AI Translator works</div>
+                <h2>One service family, multiple paths depending on the content and workflow</h2>
+              </div>
+            </div>
+            <p class="section-intro">
               The official Microsoft guidance separates Translator into text translation, document translation, and Custom Translator.
               Document translation itself supports both synchronous single file translation and asynchronous batch translation.
             </p>
 
             <div class="flow">
               <div class="step">
-                <div class="step-number">1</div>
+                <div class="step-num">1</div>
                 <h3>Choose the workflow</h3>
                 <p>Real time text, single file document translation, or batch translation across many files.</p>
+                <span class="step-connector">→</span>
               </div>
               <div class="step">
-                <div class="step-number">2</div>
+                <div class="step-num">2</div>
                 <h3>Send content to Translator</h3>
                 <p>Use REST APIs, SDKs, or Foundry for supported scenarios. Batch workflows use Blob Storage.</p>
+                <span class="step-connector">→</span>
               </div>
               <div class="step">
-                <div class="step-number">3</div>
+                <div class="step-num">3</div>
                 <h3>Apply control layers</h3>
                 <p>Use glossary for term control. Use custom models when baseline plus glossary is still not enough.</p>
+                <span class="step-connector">→</span>
               </div>
               <div class="step">
-                <div class="step-number">4</div>
+                <div class="step-num">4</div>
                 <h3>Return translated output</h3>
                 <p>Preserve document layout where supported, then pass translated output into review and publishing.</p>
               </div>
             </div>
 
-            <div class="content-card" style="margin-top:16px;">
+            <div class="card mt">
               <h3>Synchronous and asynchronous translation paths</h3>
               <p>The clearest way to explain the service choice is to compare the two operating models directly. If the source is a supported single file format and you want a direct response, synchronous works well. If the source is a PDF, storage based, or part of a broader job flow, asynchronous batch is the right path.</p>
               <img class="screenshot-image" src="presentation-assets/translator-sync-vs-async.svg" alt="Diagram comparing synchronous single file translation and asynchronous batch translation">
             </div>
 
-            <div class="grid-2" style="margin-top:16px;">
-              <div class="content-card">
+            <div class="grid-2 mt">
+              <div class="card">
                 <h3>Synchronous document translation</h3>
                 <p>
                   Best for a single document and well suited to proof of value examples when the source is a supported single file format
@@ -640,7 +632,7 @@
                   <span class="pill">Proof of value path</span>
                 </div>
               </div>
-              <div class="content-card">
+              <div class="card">
                 <h3>Asynchronous batch document translation</h3>
                 <p>
                   Best for production scale and also the right path for file types that fall outside the synchronous list, most notably PDF.
@@ -656,7 +648,7 @@
               </div>
             </div>
 
-            <div class="callout" style="margin-top:16px;">
+            <div class="callout mt">
               <h3>What this means for your scenario</h3>
               <p>
                 The file type matters. Synchronous single file translation is the cleanest path when the source is in the supported single file list,
@@ -664,7 +656,7 @@
               </p>
             </div>
 
-            <div class="notes" style="margin-top:16px;">
+            <div class="notes mt">
               <h3>Why the demo uses asynchronous translation</h3>
               <p>
                 The current proof of value uses a PDF excerpt from the source material. Because PDF translation sits on the batch document
@@ -674,14 +666,19 @@
           </div>
         </section>
 
+        <!-- 3 -->
         <section id="section-3">
           <div class="section-card">
-            <div class="section-kicker">3. Key capabilities</div>
-            <h2>Map the capability to the scenario</h2>
-            <p>
+            <div class="section-header">
+              <div class="section-num">3</div>
+              <div class="section-header-text">
+                <div class="kicker">Key capabilities</div>
+                <h2>Map the capability to the scenario</h2>
+              </div>
+            </div>
+            <p class="section-intro">
               Not every translation need should be solved the same way. The value comes from choosing the simplest option that meets the accuracy and workflow need.
             </p>
-
             <div class="table-wrap">
               <table>
                 <thead>
@@ -729,64 +726,65 @@
           </div>
         </section>
 
+        <!-- 4 -->
         <section id="section-4">
           <div class="section-card">
-            <div class="section-kicker">4. Accuracy and customization</div>
-            <h2>Use the right control layer for the right accuracy problem</h2>
-            <p>
-              The customer should leave understanding that Azure AI Translator already delivers strong baseline translation,
-              and that there are different levers for improving output depending on the nature of the issue.
+            <div class="section-header">
+              <div class="section-num">4</div>
+              <div class="section-header-text">
+                <div class="kicker">Accuracy and customization</div>
+                <h2>Use the right control layer for the right accuracy problem</h2>
+              </div>
+            </div>
+            <p class="section-intro">
+              Azure AI Translator already delivers strong baseline translation.
+              There are different levers for improving output depending on the nature of the issue.
             </p>
 
-            <div class="capability-grid">
-              <div class="content-card">
+            <div class="grid-3">
+              <div class="card">
                 <h3>Baseline neural translation</h3>
-                <p>
-                  Best starting point for general language quality. This is the default system used as the baseline for comparison.
-                </p>
+                <p>Best starting point for general language quality. This is the default system used as the baseline for comparison.</p>
                 <ul>
                   <li>Useful for general meaning and speed to value</li>
                   <li>Good enough for many broad content scenarios</li>
                   <li>May not pick the preferred industry term every time</li>
                 </ul>
               </div>
-              <div class="content-card">
+              <div class="card card-accent">
                 <h3>Glossary driven term control</h3>
-                <p>
-                  Best when the challenge is preferred terminology. Microsoft guidance for document translation supports glossary files such as TSV, CSV, and XLIFF.
-                </p>
+                <p>Best when the challenge is preferred terminology. Microsoft guidance for document translation supports glossary files such as TSV, CSV, and XLIFF.</p>
                 <ul>
                   <li>One to one source to target language translation</li>
                   <li>Useful for technical vocabulary, product names, and ambiguous words</li>
                   <li>Case sensitive by default, so source matching matters</li>
                 </ul>
               </div>
-              <div class="content-card">
+              <div class="card">
                 <h3>Custom Translator</h3>
-                <p>
-                  Best when the issue is larger than a term list, such as domain style, sentence patterns, or recurring phraseology.
-                </p>
+                <p>Best when the issue is larger than a term list, such as domain style, sentence patterns, or recurring phraseology.</p>
                 <ul>
                   <li>Requires curated training data and governance</li>
                   <li>More effort than a glossary</li>
                   <li>Good follow on phase if glossary alone is not enough</li>
                 </ul>
               </div>
-              <div class="callout">
-                <h3>What glossary control addresses</h3>
-                <p>
-                  Glossary control improves consistency for preferred terminology. It is the right lever when important domain terms
-                  need to be translated in a governed and repeatable way.
-                </p>
-              </div>
             </div>
 
-            <div class="grid-2" style="margin-top:16px;">
+            <div class="callout callout-accent mt">
+              <h3>What glossary control addresses</h3>
+              <p>
+                Glossary control improves consistency for preferred terminology. It is the right lever when important domain terms
+                need to be translated in a governed and repeatable way.
+              </p>
+            </div>
+
+            <div class="grid-2 mt">
               <div class="notes">
                 <h3>Illustrative proof points</h3>
                 <ul>
-                  <li><span class="mono">loose gear → accesorios de izado</span></li>
-                  <li><span class="mono">sheaves → roldanas</span></li>
+                  <li><code>loose gear → accesorios de izado</code></li>
+                  <li><code>sheaves → roldanas</code></li>
                   <li>Repeated technical terms are where the glossary story lands best</li>
                 </ul>
               </div>
@@ -802,17 +800,23 @@
           </div>
         </section>
 
+        <!-- 5 -->
         <section id="section-5">
           <div class="section-card">
-            <div class="section-kicker">5. Scalability and enterprise considerations</div>
-            <h2>Show that this can start small and still fit enterprise expectations</h2>
-            <p>
+            <div class="section-header">
+              <div class="section-num">5</div>
+              <div class="section-header-text">
+                <div class="kicker">Scalability and enterprise considerations</div>
+                <h2>Start small and still fit enterprise expectations</h2>
+              </div>
+            </div>
+            <p class="section-intro">
               The service is not just for experiments. Microsoft documents supported enterprise patterns for authentication,
               storage authorization, network isolation, data residency, logging, and secure deployment.
             </p>
 
             <div class="grid-3">
-              <div class="content-card">
+              <div class="card">
                 <h3>Scalability</h3>
                 <ul>
                   <li>Batch document translation supports numerous files and larger workflows.</li>
@@ -820,7 +824,7 @@
                   <li>Layout and document structure are preserved for supported formats.</li>
                 </ul>
               </div>
-              <div class="content-card">
+              <div class="card">
                 <h3>Security and access</h3>
                 <ul>
                   <li>Text translation supports resource key, bearer token, and Microsoft Entra ID authentication.</li>
@@ -828,7 +832,7 @@
                   <li>Azure Key Vault is the right place for secret handling and key rotation.</li>
                 </ul>
               </div>
-              <div class="content-card">
+              <div class="card">
                 <h3>Network and compliance</h3>
                 <ul>
                   <li>Private endpoints, firewalls, and region specific endpoints are available patterns.</li>
@@ -838,8 +842,8 @@
               </div>
             </div>
 
-            <div class="grid-2" style="margin-top:16px;">
-              <div class="callout">
+            <div class="grid-2 mt">
+              <div class="callout card-link-border">
                 <h3>Enterprise fit</h3>
                 <p>
                   This can begin as a targeted language service for a single workflow and still be deployed with the identity,
@@ -857,18 +861,24 @@
           </div>
         </section>
 
+        <!-- 6 -->
         <section id="section-6">
           <div class="section-card">
-            <div class="section-kicker">6. Demo example</div>
-            <h2>An illustrative way to show terminology control in practice</h2>
-            <p>
+            <div class="section-header">
+              <div class="section-num">6</div>
+              <div class="section-header-text">
+                <div class="kicker">Demo example</div>
+                <h2>An illustrative way to show terminology control in practice</h2>
+              </div>
+            </div>
+            <p class="section-intro">
               The current excerpt is stronger because it is more glossary centric. The comparison works best when it emphasizes
               repeated technical term control across the same source content, and it also gives a clean reason to explain why this demo
               runs as an asynchronous PDF translation workflow.
             </p>
 
             <div class="grid-2">
-              <div class="content-card">
+              <div class="card">
                 <h3>Example comparison flow</h3>
                 <ol>
                   <li>Use the same PDF excerpt, target language, and translation service in both runs.</li>
@@ -878,30 +888,30 @@
                   <li>The comparison shows how preferred terms become more consistent.</li>
                 </ol>
               </div>
-              <div class="content-card">
+              <div class="card">
                 <h3>Illustrative implementation detail</h3>
                 <p>A glossary path parameter keeps the workflow reusable and makes the changed input explicit, while the document type explains why the demo uses the asynchronous path.</p>
-                <div class="mono">sourceDocument = "source_docs/test_excerpt.pdf"
+                <div class="code-block">sourceDocument = "source_docs/test_excerpt.pdf"
 workflow = "asynchronous batch"
 glossaryPath = null
 glossaryPath = "glossary/glossary_v1-en-es.tsv"</div>
               </div>
             </div>
 
-            <div class="content-card" style="margin-top:16px;">
+            <div class="card mt">
               <h3>Illustrative request path</h3>
               <p>This is the practical flow behind the demo. The repo runs the same PDF excerpt through the same target language and the same service twice, then compares the outputs after the glossary is introduced on the second run. Public repo: <a href="https://github.com/MaxBush6299/translate_demo">github.com/MaxBush6299/translate_demo</a></p>
               <img class="screenshot-image" src="docs/Architecture.png" alt="Architecture diagram showing the Azure AI Translator demo request path">
             </div>
 
-            <div class="grid-2" style="margin-top:16px;">
+            <div class="grid-2 mt">
               <div class="notes">
                 <h3>Illustrative terms from the demo glossary</h3>
                 <ul>
-                  <li><span class="mono">loose gear</span></li>
-                  <li><span class="mono">sheaves</span></li>
-                  <li><span class="mono">proof testing</span></li>
-                  <li><span class="mono">wire ropes</span></li>
+                  <li><code>loose gear</code></li>
+                  <li><code>sheaves</code></li>
+                  <li><code>proof testing</code></li>
+                  <li><code>wire ropes</code></li>
                 </ul>
               </div>
               <div class="notes">
@@ -913,7 +923,7 @@ glossaryPath = "glossary/glossary_v1-en-es.tsv"</div>
               </div>
             </div>
 
-            <div class="callout" style="margin-top:16px;">
+            <div class="callout callout-accent mt">
               <h3>Where this can extend next</h3>
               <p>
                 If this approach looks promising, the next conversation shifts from whether translation is possible to where your organization
@@ -923,11 +933,17 @@ glossaryPath = "glossary/glossary_v1-en-es.tsv"</div>
           </div>
         </section>
 
+        <!-- 7 -->
         <section id="section-7">
           <div class="section-card">
-            <div class="section-kicker">7. References</div>
-            <h2>Selected Microsoft Learn references</h2>
-            <p>
+            <div class="section-header">
+              <div class="section-num">7</div>
+              <div class="section-header-text">
+                <div class="kicker">References</div>
+                <h2>Selected Microsoft Learn references</h2>
+              </div>
+            </div>
+            <p class="section-intro">
               The content in this presentation was grounded in current Microsoft Learn documentation for Azure AI Translator.
             </p>
             <div class="table-wrap">
@@ -967,8 +983,52 @@ glossaryPath = "glossary/glossary_v1-en-es.tsv"</div>
             </div>
           </div>
         </section>
+
       </main>
     </div>
   </div>
+
+  <script>
+    // ── Progress bar ──
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.getElementById('progress-bar').style.width = (scrollTop / scrollHeight * 100) + '%';
+    });
+
+    // ── Scroll-spy TOC ──
+    const sections = document.querySelectorAll('section[id]');
+    const tocLinks = document.querySelectorAll('.toc a');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          tocLinks.forEach(a => a.classList.remove('active'));
+          const active = document.querySelector('.toc a[href="#' + e.target.id + '"]');
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-10% 0px -70% 0px' });
+    sections.forEach(s => observer.observe(s));
+
+    // ── Section fade-in ──
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.section-card').forEach(c => cardObserver.observe(c));
+
+    // ── Dark/light toggle ──
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('cp-theme', next);
+      updateToggleLabel(next);
+    }
+    function updateToggleLabel(theme) {
+      document.getElementById('theme-icon').textContent = theme === 'dark' ? '🌙' : '☀️';
+      document.getElementById('theme-label').textContent = theme === 'dark' ? 'Dark' : 'Light';
+    }
+    updateToggleLabel(document.documentElement.getAttribute('data-theme'));
+  </script>
 </body>
 </html>
