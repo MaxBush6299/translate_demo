@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Azure AI Translator Overview for ABS</title>
+  <title>Azure AI Translator Overview</title>
   <script>
     (() => {
       const param = new URLSearchParams(window.location.search).get("clawpilotTheme");
@@ -502,14 +502,14 @@
       <div class="eyebrow">Azure AI Services</div>
       <div class="hero-grid">
         <div>
-          <h1>Azure AI Translator overview for ABS</h1>
+          <h1>Azure AI Translator overview</h1>
           <p>
             This overview explains how Azure AI Translator works, where text and document translation fit,
             how glossary and customization options improve terminology control, and how these capabilities
-            can support ABS content workflows from targeted pilots to broader operational use.
+            can support content workflows from targeted pilots to broader operational use.
           </p>
           <div class="quote">
-            Glossary driven terminology control helps ABS align translated output with preferred maritime language while using the same translation workflow.
+            Glossary driven terminology control aligns translated output with preferred domain language while using the same translation workflow.
           </div>
           <div class="hero-metrics">
             <div class="metric">
@@ -522,7 +522,7 @@
             </div>
             <div class="metric">
               <div class="metric-label">Primary value driver</div>
-              <div class="metric-value">Consistent handling of important ABS terminology</div>
+              <div class="metric-value">Consistent handling of important domain terminology</div>
             </div>
           </div>
         </div>
@@ -555,18 +555,18 @@
         <section id="section-1">
           <div class="section-card">
             <div class="section-kicker">1. Why Translator matters</div>
-            <h2>A practical language service for ABS content workflows</h2>
+            <h2>A practical language service for your content workflows</h2>
             <p>
               Azure AI Translator is a cloud based neural machine translation service that supports real time text translation,
               single file document translation, batch document translation, and deeper customization through custom models.
-              For ABS, the most important question is not whether Translator can translate, but how it can fit into content operations
-              while keeping maritime terminology consistent.
+              The most important question is not whether Translator can translate, but how it can fit into content operations
+              while keeping domain terminology consistent.
             </p>
             <div class="grid-2">
               <div class="content-card">
                 <h3>Business value</h3>
                 <ul>
-                  <li>Translator helps ABS move faster across languages without rebuilding the content pipeline.</li>
+                  <li>Translator helps organizations move faster across languages without rebuilding the content pipeline.</li>
                   <li>It can support lightweight use cases and governed enterprise workflows with the same service family.</li>
                   <li>Glossaries provide a practical way to enforce preferred terminology before considering custom models.</li>
                 </ul>
@@ -657,7 +657,7 @@
             </div>
 
             <div class="callout" style="margin-top:16px;">
-              <h3>What this means for ABS</h3>
+              <h3>What this means for your scenario</h3>
               <p>
                 The file type matters. Synchronous single file translation is the cleanest path when the source is in the supported single file list,
                 while batch translation is the right choice for broader production workflows and for PDF based scenarios like this demo.
@@ -667,7 +667,7 @@
             <div class="notes" style="margin-top:16px;">
               <h3>Why the demo uses asynchronous translation</h3>
               <p>
-                The current proof of value uses a PDF excerpt from the ABS source material. Because PDF translation sits on the batch document
+                The current proof of value uses a PDF excerpt from the source material. Because PDF translation sits on the batch document
                 translation path, the demo uses asynchronous translation even though the core story is still glossary driven terminology control.
               </p>
             </div>
@@ -689,7 +689,7 @@
                     <th>Capability</th>
                     <th>What it does</th>
                     <th>Best fit</th>
-                    <th>Relevance for ABS</th>
+                    <th>Relevance for your scenario</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -709,13 +709,13 @@
                     <td><strong>Document translation, batch</strong></td>
                     <td>Translate many files asynchronously while preserving structure and format.</td>
                     <td>Large document sets, export based localization, repository scale jobs</td>
-                    <td>Best longer term option for governed ABS translation operations</td>
+                    <td>Best longer term option for governed translation operations at scale</td>
                   </tr>
                   <tr>
                     <td><strong>Glossary</strong></td>
                     <td>Apply source to target terminology control during document translation.</td>
                     <td>Known terminology, branded language, domain specific vocabulary</td>
-                    <td>Fastest way to improve ABS maritime terms without model training</td>
+                    <td>Fastest way to improve domain-specific terms without model training</td>
                   </tr>
                   <tr>
                     <td><strong>Custom Translator</strong></td>
@@ -783,7 +783,7 @@
 
             <div class="grid-2" style="margin-top:16px;">
               <div class="notes">
-                <h3>Illustrative ABS proof points</h3>
+                <h3>Illustrative proof points</h3>
                 <ul>
                   <li><span class="mono">loose gear → accesorios de izado</span></li>
                   <li><span class="mono">sheaves → roldanas</span></li>
@@ -874,7 +874,7 @@
                   <li>Use the same PDF excerpt, target language, and translation service in both runs.</li>
                   <li>Because the source is a PDF, submit both runs through asynchronous batch document translation.</li>
                   <li>Run one shows baseline Translator output with no glossary.</li>
-                  <li>Run two adds a domain glossary for ABS terminology.</li>
+                  <li>Run two adds a domain glossary for preferred terminology.</li>
                   <li>The comparison shows how preferred terms become more consistent.</li>
                 </ol>
               </div>
@@ -896,7 +896,7 @@ glossaryPath = "glossary/glossary_v1-en-es.tsv"</div>
 
             <div class="grid-2" style="margin-top:16px;">
               <div class="notes">
-                <h3>Illustrative terms from the ABS glossary</h3>
+                <h3>Illustrative terms from the demo glossary</h3>
                 <ul>
                   <li><span class="mono">loose gear</span></li>
                   <li><span class="mono">sheaves</span></li>
@@ -916,7 +916,7 @@ glossaryPath = "glossary/glossary_v1-en-es.tsv"</div>
             <div class="callout" style="margin-top:16px;">
               <h3>Where this can extend next</h3>
               <p>
-                If this approach looks promising, the next conversation shifts from whether translation is possible to where ABS
+                If this approach looks promising, the next conversation shifts from whether translation is possible to where your organization
                 wants to apply it first: ad hoc files, repeatable document sets, or a broader content workflow.
               </p>
             </div>
